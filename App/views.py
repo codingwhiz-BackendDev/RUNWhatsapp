@@ -139,10 +139,12 @@ def settings(request):
             profile.save() 
              
             mycontact = myContact.objects.filter(phone_number=username)
-           
-            mycontact.image = image 
-            mycontact.bio = bio
-            print(mycontact.image) 
+            for contact in mycontact:
+                print(contact)
+                contact.image = image 
+                contact.bio = bio
+                contact.save()
+                print(contact.image) 
             
             
         else:
@@ -160,9 +162,12 @@ def settings(request):
             profile.save() 
              
             mycontact = myContact.objects.filter(phone_number=username)
-            mycontact.image = image
-            mycontact.bio = bio
-            print(mycontact.image)
+            for contact in mycontact:
+                print(contact)
+                contact.image = image 
+                contact.bio = bio
+                contact.save()
+                print(contact.image) 
                  
               
     return render(request, 'settings.html', {'profile': profile})
