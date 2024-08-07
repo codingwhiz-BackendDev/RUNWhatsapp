@@ -120,7 +120,6 @@ def add_contact(request):
          
     return render(request, 'add_contact.html', {'profile':profile})
 
-
 @login_required(login_url='login')
 def settings(request): 
     profile = Profile.objects.get(username=request.user)
@@ -204,40 +203,44 @@ def send_message(request):
             contact.save()
     return HttpResponse('Message sent')
  
-
-
 @login_required(login_url='login')
 def get_chat_message(request, pk):
     user = request.user
     messages = Message.objects.filter(Q(sender = pk)|Q(receiver = pk)).exclude(~Q(sender=user),~Q(receiver=user))
     return JsonResponse({'messages':list(messages.values())})
 
-
 @login_required(login_url='login')
 def status(request): 
+    user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    user_contacts = myContact.objects.filter(user_phone_number=request.user)
+    user_contacts = myContact.objects.filter(user_phone_number=user)
+    user_contacts = list(user_contacts)
     
-    
+    print(str(user_contacts))
     #Loop through contacts which the user phone number is the logged in user
     for user_contact in user_contacts:
+        # print(user_contact.phone_number)
         
         # Get the user obj of people who has the logged in user contact
         user_instance = User.objects.filter(username=user_contact.phone_number)
-         
+        print(user_instance)
+        
          # using their instance get their status and the logged in user status and display it
         for inst in user_instance:  
-            #print(inst)
+            
             contact_status = Status.objects.filter(user = inst)
             user_obj = User.objects.get(username=request.user)
             user_status = Status.objects.filter(user = user_obj)
             contact_status = list(contact_status)
             user_status = list(user_status)
             
+            # print(user_status)
+            # print(contact_status)
+            
             for status in contact_status:
                 user_status.append(status) 
                 
-            print(user_status)
+            
                 
         
             return render(request, 'status.html', {'profile':profile, 'user_status':user_status})
