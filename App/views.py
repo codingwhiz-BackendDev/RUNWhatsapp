@@ -213,43 +213,22 @@ def get_chat_message(request, pk):
 def status(request): 
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    user_contacts = myContact.objects.filter(user_phone_number=user)
-    user_contacts = list(user_contacts)
+    user_status = Status.objects.all()
+    user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
+    # print(user_contacts)
     
-    print(str(user_contacts))
-    #Loop through contacts which the user phone number is the logged in user
-    for user_contact in user_contacts:
-        # print(user_contact.phone_number)
-        
-        # Get the user obj of people who has the logged in user contact
-        user_instance = User.objects.filter(username=user_contact.phone_number)
-        print(user_instance)
-        
-         # using their instance get their status and the logged in user status and display it
-        for inst in user_instance:  
-            
-            contact_status = Status.objects.filter(user = inst)
-            user_obj = User.objects.get(username=request.user)
-            user_status = Status.objects.filter(user = user_obj)
-            contact_status = list(contact_status)
-            user_status = list(user_status)
-            
-            # print(user_status)
-            # print(contact_status)
-            
-            for status in contact_status:
-                user_status.append(status) 
+    for profiles in Status.objects.all():
+        profiles = User.objects.get(username=profiles)
+        status_profile = Profile.objects.get(username=profiles)
+        status = Status.objects.filter(user=profiles)
+        print(status)
+        # print(status_profile.first_name)
                 
             
                 
         
-            return render(request, 'status.html', {'profile':profile, 'user_status':user_status})
-    
-        #print(user_status)
-    else:
-        
-    
-        return render(request, 'status.html', {'profile':profile, })
+    return render(request, 'status.html', {'profile':profile, 'user_status':user_status,'status_profile':status_profile})
+
 
 @login_required(login_url='login')
 def write_status(request):

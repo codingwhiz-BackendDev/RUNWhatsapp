@@ -369,20 +369,20 @@
             {% if request.user.is_authenticated %}
             <div class="whatsapp"><a href="/">Messeges</a></div>
             <div class="statuss"><a href="/status">Status</a></div>
-            <div class="communities"><a href="/communities">Communities</a></div>
+            <div class="communities"><a href="#">Communities</a></div>
             <div class="calls"><a href="/add_contact">Calls</a></div>
             <div class="dropdown">
                 {% if profile.image.url %}
                 <img class="img dropbtn" onclick="myFunction()" src="{{profile.image.url}}" alt="">
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="">Chat settings</a>
+                    <a href="#">Chat settings</a>
                     <a href="/settings">Profile setttings</a>
                     <a href="logout">Logout</a>
                 </div>
                 {% else %}
                 <img class="img dropbtn" onclick="myFunction()" src="{% static 'blank.png' %}" alt="">
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="">Chat settings</a>
+                    <a href="#">Chat settings</a>
                     <a href="/settings">Profile setttings</a>
                     <a href="logout">Logout</a>
                 </div>
@@ -425,6 +425,7 @@
         }
 
         // Close the dropdown if the user clicks outside of it
+
 
     </script>
 </body>
