@@ -13,6 +13,12 @@ def index(request):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
     
+    if request.method == 'POST':
+        search = request.POST['search']
+        result = myContact.objects.filter(Q(user=user)|Q(contact__icontains = search))
+        
+        return render(request, 'index.html', {'result':result})
+    
     mycontact = myContact.objects.filter(user_phone_number= user)
  
     people_with_mycontact = myContact.objects.filter(phone_number = user) 
@@ -23,7 +29,8 @@ def index(request):
         'mycontact':mycontact,
         'profile':profile,
         'people_with_mycontact':people_with_mycontact,
-        'all_contact':all_contact
+        'all_contact':all_contact,
+        
     }
     
     return render(request, 'index.html', context)
