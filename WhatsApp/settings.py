@@ -27,7 +27,7 @@ DEBUG = True
  
 DEBUG = True
 #'192.168.43.87'
-ALLOWED_HOSTS = ['coding74whiz.pythonanywhere.com'] 
+ALLOWED_HOSTS = [] 
 
 
 # Application definition

@@ -7,8 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 import pytz
-from django.contrib.sessions.models import Session
-from .utils import is_user_online
+ 
 # Create your views here.
 
 @login_required(login_url='login')
