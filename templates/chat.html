@@ -29,16 +29,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
+      padding: 2px;
+      width: 100%;
     }
 
     .chat {
-      background-color: #fff;
-      padding: 2rem;
+      background-color: #948989;
+      padding: 2px;
       border-radius: 0.5rem;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
     }
 
     header img {
@@ -51,15 +51,13 @@
     .input-field {
       display: flex;
       align-items: center;
-      padding: 1rem;
-      border-top: 1px solid #ccc;
     }
 
     .input-field input {
-      padding: 0.5rem;
+
       border: none;
       border-radius: 0.5rem;
-      width: 100%;
+      width: 300%;
     }
 
     .input-field button {
@@ -69,6 +67,14 @@
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;
+    }
+
+    input[type=text] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+
+      box-sizing: border-box;
     }
 
     /* Responsive styles */
@@ -90,7 +96,7 @@
   <header>
     <div class="logo" style="width: auto">
       <img src="{{profile.image.url}}" alt="Profile Picture" />
-      <a href="/contact_profile/{{pk}}">{{profile.first_name}}</a>
+      <a href="/contact_profile/{{pk}}">{{profile.username}}</a>
       <button style="float: right">
         <a href="/" style="text-decoration: none">back</a>
       </button>
@@ -98,11 +104,13 @@
   </header>
   <main>
     <section class="chat">
+
       <div>
         <div class="border-t pt-4 space-y-4" id="display-comment"></div>
         <!-- Add more messages here -->
       </div>
 
+      <br><br>
       <form id="send" method="POST" class="input-field">
         {% csrf_token %}
         <input type="hidden" id="sender" name="sender" value="{{request.user}}" />

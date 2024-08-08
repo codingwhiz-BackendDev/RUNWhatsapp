@@ -28,9 +28,24 @@
             color: #fff;
             padding: 1rem;
             text-align: center;
+
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
 
-
+        .upheader {
+            background-color: #333;
+            color: #fff;
+            padding: 4px;
+            text-align: center;
+            width: 100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-gap: 1px;
+            padding: 1px;
+        }
 
         main {
             display: flex;
@@ -127,7 +142,7 @@
 
         .logo {
             display: grid;
-            grid-template-columns: auto auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto auto;
             grid-gap: 1px;
             padding: 1px;
         }
@@ -358,36 +373,37 @@
 </head>
 
 <body>
-    <header>
-        <div class="">
-            <div>
-                <h2>RunWhatsApp</h2>
+    <div class="upheader">
+        <h2>RunWhatsApp</h2>
+        <div class="dropdown">
+            {% if profile.image.url %}
+            <img class="img dropbtn" onclick="myFunction()" src="{{profile.image.url}}" alt="">
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Chat settings</a>
+                <a href="/settings">Profile setttings</a>
+                <a href="logout">Logout</a>
             </div>
-            <br>
+            {% else %}
+            <img class="img dropbtn" onclick="myFunction()" src="{% static 'blank.png' %}" alt="">
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Chat settings</a>
+                <a href="/settings">Profile setttings</a>
+                <a href="logout">Logout</a>
+            </div>
+            {% endif %}
         </div>
+    </div>
+
+    <header>
+
         <div class="logo">
             {% if request.user.is_authenticated %}
             <div class="whatsapp"><a href="/">Messeges</a></div>
             <div class="statuss"><a href="/status">Status</a></div>
-            <div class="communities"><a href="#">Communities</a></div>
+            <div class="communities"><a href="communities">Communities</a></div>
             <div class="calls"><a href="/add_contact">Calls</a></div>
-            <div class="dropdown">
-                {% if profile.image.url %}
-                <img class="img dropbtn" onclick="myFunction()" src="{{profile.image.url}}" alt="">
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="#">Chat settings</a>
-                    <a href="/settings">Profile setttings</a>
-                    <a href="logout">Logout</a>
-                </div>
-                {% else %}
-                <img class="img dropbtn" onclick="myFunction()" src="{% static 'blank.png' %}" alt="">
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="#">Chat settings</a>
-                    <a href="/settings">Profile setttings</a>
-                    <a href="logout">Logout</a>
-                </div>
-                {% endif %}
-            </div>
+
+
 
             {% else %}
             <div class="signin"><a href="">RunWhatsApp</a></div>

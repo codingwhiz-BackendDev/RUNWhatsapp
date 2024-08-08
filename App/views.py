@@ -227,7 +227,7 @@ def status(request):
             
                 
         
-    return render(request, 'status.html', {'profile':profile, 'user_status':user_status,'status_profile':status_profile})
+    return render(request, 'status.html', {'profile':profile, 'user_status':user_status})
 
 
 @login_required(login_url='login')
@@ -298,4 +298,6 @@ def communities(request):
             return render(request, 'communities.html',{'profile':profile,'communities':communities} )
     else:
         return render(request, 'communities.html',{'profile':profile, 'communities':communities} )
-      
+
+def view_community(request,pk):
+    return render(request, 'community.html')

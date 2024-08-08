@@ -33,11 +33,11 @@ $(document).ready(function () {
             type: 'GET',
             url: '/get_chat_message/' + $('#receiver').val(),
             success: function (response) {
-    
+
                 $('#display-comment').empty()
                 for (var key in response.messages) {
                     if (response.messages[key].sender != $('#sender').val()) {
-                        var temp = "<div class='border-t pt-4' style='margin-right:auto;width:fit-content;'><div class='flex'><div class='w-10 h-10 rounded-full relative flex-shrink-0'>"
+                        var temp = "<div class='border-t pt-4' style='margin-right:auto;width:fit-content;'><div class='flex'><div class='h-10 rounded-full relative flex-shrink-0'>"
                             + "</div><div class='text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20'>" +
                             "<p class='leading-6'></p>" + response.messages[key].message + "</ul></div></div ></div > "
                         $('#display-comment').append(temp)
@@ -73,10 +73,10 @@ $(document).ready(function () {
 })
 
 
-function deletes(){
+function deletes() {
     alert('hshsh')
 }
-hey = document.getElementById('leading-6').innerHTML 
+hey = document.getElementById('leading-6').innerHTML
 
 deletes()
 console.log(document.body.classList)
