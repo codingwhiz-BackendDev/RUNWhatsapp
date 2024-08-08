@@ -14,7 +14,7 @@ def index(request):
     user = User.objects.get(username=request.user)
     if request.method == 'POST':
         search = request.POST['search']
-        result = myContact.objects.filter(contact__icontains =search ,user_phone_number=request.user)
+        result = myContact.objects.filter(contact__icontains = search ,user_phone_number=request.user)
         print(result)
         
         return render(request, 'index.html', {'result':result,'profile':profile})
