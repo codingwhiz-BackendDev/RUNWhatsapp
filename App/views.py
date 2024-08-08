@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import myContact, Profile, Status, Message, Communities
+from .models import myContact, Profile, Status, Message, Communities, Group_comment
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 # Create your views here.
@@ -300,4 +300,19 @@ def communities(request):
         return render(request, 'communities.html',{'profile':profile, 'communities':communities} )
 
 def view_community(request,pk):
-    return render(request, 'community.html')
+    profile = Profile.objects.get(username=request.user)
+    pk=pk
+    return render(request, 'community.html', {'profile':profile, 'pk':pk})
+
+
+@login_required(login_url='login') 
+def group_chat_comment(request):
+    if request.method == 'POST':
+        sender = request.POST['sender'] 
+        comment = request.POST['comment']
+        group_name = request.POST['group_name']
+        profileimage = request.POST['profile_image']
+        
+        comment = Group_comment.objects.create(sender=sender,comment=comment,profileimage=profileimage,group_name=group_name) 
+        comment.save()
+    return HttpResponse('s')

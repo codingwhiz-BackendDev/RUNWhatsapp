@@ -1,0 +1,134 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
+  <title>{{profile.first_name}} Chat Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .logo {
+      font-weight: bold;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2px;
+      width: 100%;
+    }
+
+    .chat {
+      background-color: #948989;
+      padding: 2px;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+
+    header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    .input-field {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field input {
+
+      border: none;
+      border-radius: 0.5rem;
+      width: 300%;
+    }
+
+    .input-field button {
+      background-color: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    input[type=text] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+
+      box-sizing: border-box;
+    }
+
+    /* Responsive styles */
+
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .chat {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo" style="width: auto">
+      <img src="{{profile.image.url}}" alt="Profile Picture" />
+      <a href="/contact_profile/{{pk}}">{{profile.username}}</a>
+      <button style="float: right">
+        <a href="/communities" style="text-decoration: none">back</a>
+      </button>
+    </div>
+  </header>
+  <main>
+    <section class="chat">
+
+      <div>
+        <div class="border-t pt-4 space-y-4" id="display-comment"></div>
+        <!-- Add more messages here -->
+      </div>
+
+      <br><br>
+      <form id="group" class="input-field">
+        {% csrf_token %}
+        <input type="hidden" id="sender" name="sender" value="{{request.user}}" />  
+        <input type="hidden" id="group_name" name="group_name" value="{{pk}}" />
+        <input type="hidden" id="profile_image" name="profile_image" value="{{profile.image.url}}">
+        <input type="text" id="comment" required name="comment" placeholder="Type a message" />
+        <button type="submit">send</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/uikit.js' %}"></script>
+  <script src="{% static 'assets/js/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+
+  <script src="{% static 'group_comment.js' %}"></script>
+</body>
+
+</html>

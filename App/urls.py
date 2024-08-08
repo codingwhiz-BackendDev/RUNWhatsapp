@@ -17,6 +17,7 @@ urlpatterns = [
     path("contact_profile/<str:pk>", views.contact_profile, name='contact_profile'),
     path("get_chat_message/<str:pk>", views.get_chat_message, name='get_chat_message'), 
     path('delete_post/<str:pk>', views.delete_post, name='delete_post'),
+    path('group_chat_comment', views.group_chat_comment, name='group_chat_comment'),
     path('communities', views.communities, name='communities'),
     path('view_community/<str:pk>', views.view_community, name='view_community'),
 ]
