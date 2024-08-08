@@ -30,6 +30,11 @@
         </section>
         {% endfor %}
 
+        {% if not mycontact %}
+        <h4 style="text-align: center">NO CONTACT , ADD CONTACTS TO MESSAGE</h4>
+        {% endif %}
+
+
         <!-- {% for contacts in people_with_mycontact %}
         <section class="chat-window">
             <h4>
