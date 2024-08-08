@@ -184,9 +184,15 @@ def settings(request):
 def chat(request, pk):
     get_user =  User.objects.get(username=pk)
     profile = Profile.objects.get(username=get_user)
-    pk=pk 
- 
-    return render(request, 'chat.html', {'profile':profile, 'get_user':get_user,'pk':pk})
+    pk=pk  
+    contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
+    context = {
+        'contact':contact,
+        'profile':profile,
+        'get_user':get_user,
+        'pk':pk
+    }
+    return render(request, 'chat.html', context)
 
 @login_required(login_url='login')
 def send_message(request):
