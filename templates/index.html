@@ -10,6 +10,12 @@
 <body>
     {% block content %}
     <main>
+        <div style="width: 100%; max-width:400px">
+            <form action="" method="POST">
+                <input type="text" style="border-radius: 20px;">
+            </form>
+        </div>
+
         {% for contacts in mycontact %}
         <section class="chat-window">
             <div class="chat-header">
