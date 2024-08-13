@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block title %}
+    Setttings Page
+    {% endblock title %}
+
+</head>
+
+<body>
+
+    {% block content %}
+    <div class="cards">
+        <img class="picture" src="{{profile.image.url}}" alt="" style="width:100%">
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image">
+            <input type="hidden" name="username" value="{{request.user}}">
+            <input type="text" name="first_name" value="{{profile.first_name}}" placeholder="Enter Your Username">
+
+            {% if profile.bio %}
+            <textarea name="bio" id="" cols="30" rows="10">{{profile.bio}}</textarea>
+            {% else %}
+            <textarea name="bio" id="" cols="30" rows="10" placeholder="Enter Bio"></textarea>
+            {% endif %}
+            <button type="submit" class="button">Update</button>
+        </form>
+    </div>
+    {% endblock content %}
+
+</body>
+
+</html>

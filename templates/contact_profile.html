@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    Update Page
+    {% endblock title %}
+</head>
+
+<body>
+    {% block content %}
+    <div class="cards">
+        <img class="picture" src="{{contact.image.url}}" alt="" style="width:100%">
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{request.user}}">
+            <input type="text" name="contact_name" value="{{mycontact.contact}}" placeholder="Enter Your Username">
+
+            {% if contact.bio %}
+            <textarea name="bio" id="" readonly cols="30" rows="10">{{contact.bio}}</textarea>
+            {% else %}
+            <textarea name="bio" readonly id="" cols="30" rows="10"></textarea>
+            {% endif %}
+            <button type="submit" class="button">Update Contact Name</button>
+        </form>
+    </div>
+    {% endblock content %}
+
+</body>
+
+</html>

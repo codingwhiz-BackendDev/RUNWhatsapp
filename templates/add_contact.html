@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block title %}
+    Calls Page
+    {% endblock title %}
+
+</head>
+
+<body>
+
+    {% block content %}
+    <main>
+        {% for message in messages %}
+        <div>
+            <p>{{message}}</p>
+        </div>
+        {% endfor %}
+        <section class="add-contact">
+            <h2>Add Contact</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" required id="name" name="first_name" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" required id="phone" name="username" placeholder="Enter phone number">
+                </div>
+                <input type="hidden" name="loggedInUser" value="{{user.first_name}}">
+                <input type="hidden" name="loggedInUserNumber" value="{{user.username}}">
+
+                <button type="submit">Add Contact</button>
+            </form>
+        </section>
+    </main>
+    {% endblock content %}
+
+
+</body>
+
+</html>

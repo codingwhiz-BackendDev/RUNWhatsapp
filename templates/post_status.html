@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Status Page
+        {% endblock title %}
+    </title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    {% block content %}
+    <main>
+        <section class="status">
+            <header>
+                <h2>Post Something</h2>
+            </header>
+            <div class="cards">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h6 style="text-align: left;">Upload image</h6>
+                    <input type="file" name="image" accept="image/*">
+                    <h6 style="text-align: left;">Upload video</h6>
+                    <input type="file" name="video" accept="video/*">
+                    <textarea name="text" cols="30" rows="10" placeholder="Type a status update"></textarea>
+                    <button type="submit">POST</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    {% endblock content %}
+
+
+</body>
+
+</html>

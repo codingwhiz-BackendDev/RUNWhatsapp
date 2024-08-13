@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    Communities Page
+    {% endblock title %}
+</head>
+
+<body>
+    {% block content %}
+    <main>
+        {% for message in messages %}
+        <div class="alert alert-dark text-center">
+            <p>{{message}}</p>
+        </div>
+        {% endfor %}
+        <div class="cards" style="width: 100%;">
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" required name="group_pic">
+                <input type="hidden" name="group_admin" value="{{request.user}}">
+                <input type="text" name="group_name" placeholder="Enter group name">
+
+                <button type="submit" class="button">Create community</button>
+            </form>
+        </div>
+
+        {% for group in communities %}
+        <section class="chat-window">
+            <div class="chat-header">
+                <a href=""><img src="{{group.group_pic.url}}" alt="Profile Picture"></a>
+                <h2><a href="" style="color: black;">{{group.group_name}}</a></h2>
+            </div>
+            <a href="">
+                <div>
+                    <h5 style="color: black; font-family:monospace"></h5>
+                    <input type="hidden" name="" value="" id="contact_number">
+                </div>
+            </a>
+        </section>
+        {% endfor %}
+    </main>
+    {% endblock content %}
+</body>
+
+</html>

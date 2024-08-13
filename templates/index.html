@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %} RunWhatsApp {% endblock title %}
+</head>
+
+<body>
+    {% block content %}
+    <main>
+        {% for contacts in mycontact %}
+        <section class="chat-window">
+            <div class="chat-header">
+                <a href="/contact_profile/{{contacts.phone_number}}"><img src="{{contacts.image.url}}"
+                        alt="Profile Picture" /></a>
+                <h2>
+                    <a href="/contact_profile/{{contacts.phone_number}}" style="color: black">{{contacts}}</a>
+                </h2>
+            </div>
+            <a href="chat/{{contacts.phone_number}}">
+                <div>
+                    <h5 style="color: black; font-family: monospace">
+                        {{contacts.last_message|truncatewords:7}}
+                    </h5>
+                    <input type="hidden" name="" value="{{contacts.phone_number}}" id="contact_number" />
+                </div>
+            </a>
+        </section>
+        {% endfor %}
+
+        <!-- {% for contacts in people_with_mycontact %}
+        <section class="chat-window">
+            <h4>
+                {{contacts.user_phone_number}} message you add number to see message
+            </h4>
+        </section>
+        {% endfor %} -->
+    </main>
+
+    {% endblock content %}
+</body>
+
+</html>
