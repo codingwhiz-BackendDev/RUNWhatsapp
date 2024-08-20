@@ -1,157 +1,127 @@
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
-    <title>{{profile.first_name}} Chat Page</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
 
-      header {
-        background-color: #333;
-        color: #fff;
-        padding: 1rem;
-        text-align: center;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
+  <title>{{profile.first_name}} Chat Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-      .logo {
-        font-weight: bold;
-      }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
 
+    .logo {
+      font-weight: bold;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .chat {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 1rem;
+    }
+
+    .input-field {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+    }
+
+    .input-field input {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      width: 100%;
+    }
+
+    .input-field button {
+      background-color: #333;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    /* Responsive styles */
+
+    @media (max-width: 768px) {
       main {
-        display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 2rem;
       }
 
       .chat {
-        background-color: #fff;
-        padding: 2rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-      }
-
-      header img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 1rem;
-      }
-
-      .input-field {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border-top: 1px solid #ccc;
-      }
-
-      .input-field input {
-        padding: 0.5rem;
-        border: none;
-        border-radius: 0.5rem;
         width: 100%;
       }
+    }
+  </style>
+</head>
 
-      .input-field button {
-        background-color: #333;
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-      }
-
-      /* Responsive styles */
-
-      @media (max-width: 768px) {
-        main {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .chat {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <header>
-      <div class="logo" style="width: auto">
-        <img src="{{profile.image.url}}" alt="Profile Picture" />
-        <a href="/contact_profile/{{pk}}">{{profile.first_name}}</a>
-        <button style="float: right">
-          <a href="/" style="text-decoration: none">back</a>
-        </button>
+<body>
+  <header>
+    <div class="logo" style="width: auto">
+      <img src="{{profile.image.url}}" alt="Profile Picture" />
+      <a href="/contact_profile/{{pk}}">{{profile.first_name}}</a>
+      <button style="float: right">
+        <a href="/" style="text-decoration: none">back</a>
+      </button>
+    </div>
+  </header>
+  <main>
+    <section class="chat">
+      <div>
+        <div class="border-t pt-4 space-y-4" id="display-comment"></div>
+        <!-- Add more messages here -->
       </div>
-    </header>
-    <main>
-      <section class="chat">
-        <div>
-          <div class="border-t pt-4 space-y-4" id="display-comment"></div>
-          <!-- Add more messages here -->
-        </div>
 
-        <form id="send" method="POST" class="input-field">
-          {% csrf_token %}
-          <input
-            type="hidden"
-            id="sender"
-            name="sender"
-            value="{{request.user}}"
-          />
-          <input
-            type="hidden"
-            id="receiver"
-            name="receiver"
-            value="{{profile.username}}"
-          />
-          <input
-            type="hidden"
-            id="receiverId"
-            name="receiverId"
-            value="{{get_user.id}}"
-          />
-          <input
-            type="hidden"
-            id="senderId"
-            name="senderId"
-            value="{{user.id}}"
-          />
-          <input
-            type="text"
-            id="message"
-            required
-            name="message"
-            placeholder="Type a message"
-          />
-          <button type="submit">send</button>
-        </form>
-      </section>
-    </main>
+      <form id="send" method="POST" class="input-field">
+        {% csrf_token %}
+        <input type="hidden" id="sender" name="sender" value="{{request.user}}" />
+        <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
+        <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
+        <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
+        <input type="text" id="message" required name="message" placeholder="Type a message" />
+        <button type="submit">send</button>
+      </form>
+    </section>
+  </main>
 
-    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'assets/js/uikit.js' %}"></script>
-    <script src="{% static 'assets/js/simplebar.js' %}"></script>
-    <script src="{% static 'assets/js/custom.js' %}"></script>
+  <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/uikit.js' %}"></script>
+  <script src="{% static 'assets/js/simplebar.js' %}"></script>
+  <script src="{% static 'assets/js/custom.js' %}"></script>
 
-    <script src="{% static 'send_chat_message.js' %}"></script>
-  </body>
+  <script src="{% static 'send_chat_message.js' %}"></script>
+</body>
+
 </html>
-
-
-
-
-
- 
