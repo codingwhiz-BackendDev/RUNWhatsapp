@@ -55,4 +55,13 @@ class Communities(models.Model):
     
     def __str__(self):
         return str(self.group_name)
+
+class Group_comment(models.Model):
+    sender = models.CharField(max_length=50000000, null=True) 
+    comment =  models.CharField(max_length=50000000, null=True)
+    userId = models.CharField(max_length=50, null=True) 
+    profileimage = models.ImageField(default='blank.png')
+    group_name = models.CharField(max_length=50000000, null=True)
     
+    def __str__(self):
+        return str(self.comment)

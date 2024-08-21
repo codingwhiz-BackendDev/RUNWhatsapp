@@ -98,7 +98,7 @@
       <img src="{{profile.image.url}}" alt="Profile Picture" />
       <a href="/contact_profile/{{pk}}">{{profile.username}}</a>
       <button style="float: right">
-        <a href="/" style="text-decoration: none">back</a>
+        <a href="/communities" style="text-decoration: none">back</a>
       </button>
     </div>
   </header>
@@ -111,13 +111,12 @@
       </div>
 
       <br><br>
-      <form id="send" method="POST" class="input-field">
+      <form id="group" class="input-field">
         {% csrf_token %}
-        <input type="hidden" id="sender" name="sender" value="{{request.user}}" />
-        <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
-        <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
-        <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
-        <input type="text" id="message" required name="message" placeholder="Type a message" />
+        <input type="hidden" id="sender" name="sender" value="{{request.user}}" />  
+        <input type="hidden" id="group_name" name="group_name" value="{{pk}}" />
+        <input type="hidden" id="profile_image" name="profile_image" value="{{profile.image.url}}">
+        <input type="text" id="comment" required name="comment" placeholder="Type a message" />
         <button type="submit">send</button>
       </form>
     </section>
@@ -129,7 +128,7 @@
   <script src="{% static 'assets/js/simplebar.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
 
-  <script src="{% static 'send_chat_message.js' %}"></script>
+  <script src="{% static 'group_comment.js' %}"></script>
 </body>
 
 </html>

@@ -18,6 +18,7 @@
             <p>{{message}}</p>
         </div>
         {% endfor %}
+        <h2>Communities</h2>
         <div class="cards" style="width: 100%;">
 
             <form action="" method="POST" enctype="multipart/form-data">
@@ -30,11 +31,12 @@
             </form>
         </div>
 
+
         {% for group in communities %}
         <section class="chat-window">
             <div class="chat-header">
-                <a href=""><img src="{{group.group_pic.url}}" alt="Profile Picture"></a>
-                <h2><a href="" style="color: black;">{{group.group_name}}</a></h2>
+                <a href="{{group.group_pic.url}}"><img src="{{group.group_pic.url}}" alt="Profile Picture"></a>
+                <h2><a href="/view_community/{{group.group_name}}" style="color: black;">{{group.group_name}}</a></h2>
             </div>
             <a href="">
                 <div>
@@ -45,7 +47,9 @@
         </section>
         {% endfor %}
     </main>
+    <br><br><br><br><br>
     {% endblock content %}
+
 </body>
 
 </html>
