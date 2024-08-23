@@ -19,6 +19,9 @@
       color: #fff;
       padding: 1rem;
       text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
 
     .logo {
@@ -117,7 +120,7 @@
         <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
         <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
         <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
-        <input type="text" id="message" required name="message" placeholder="Type a message" />
+        <input type="text" autofocus id="message" required name="message" placeholder="Type a message" />
         <button type="submit">send</button>
       </form>
     </section>
