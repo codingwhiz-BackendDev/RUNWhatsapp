@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>
 
         {% block title %}
@@ -405,21 +405,21 @@
         <div class="logo">
             {% if request.user.is_authenticated %}
             <div class="whatsapp"><a href="/">
-                    <span class="fas fa-comment" style='font-size:20px;' title="Chats"></span><br>
+                    <span class="fa fa-comment" style='font-size:20px;' title="Chats"></span><br>
                     Chats
                 </a>
             </div>
 
             <div class="statuss"><a href="/status">
-                    <span class="fas fa-sync" style='font-size:20px;' title="Chats"></span><br>
+                    <span class="fa fa-refresh" style='font-size:20px;' title="Chats"></span><br>
                     Status</a>
             </div>
             <div class="communities"><a href="communities">
-                    <span class="fas fa-users" style='font-size:20px;' title="Chats"></span><br>
+                    <span class="fa fa-users" style='font-size:20px;' title="Chats"></span><br>
                     Groups</a>
             </div>
             <div class="calls"><a href="/add_contact">
-                    <span class="fas fa-phone" style='font-size:20px;' title="Chats"></span><br>
+                    <span class="fa fa-phone" style='font-size:20px;' title="Chats"></span><br>
                     Calls</a>
             </div>
 
