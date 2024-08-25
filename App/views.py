@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import myContact, Profile, Status, Message, Communities, Group_comment
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
+from datetime import datetime, timedelta
 # Create your views here.
 
 @login_required(login_url='login')
@@ -176,7 +177,7 @@ def chat(request, pk):
     get_user =  User.objects.get(username=pk)
     profile = Profile.objects.get(username=get_user)
     pk=pk 
-    
+ 
     return render(request, 'chat.html', {'profile':profile, 'get_user':get_user,'pk':pk})
 
 @login_required(login_url='login')
