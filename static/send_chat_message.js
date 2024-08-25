@@ -60,6 +60,9 @@ $(document).ready(function () {
                 document.body.onmouseenter = () => {
                     document.body.classList.add("active");
                 }
+                function myFunction() {
+                    document.body.classList.remove("active");
+                }
                 document.body.onscroll = () => {
                     document.body.classList.add("active");
                 }

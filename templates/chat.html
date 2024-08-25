@@ -121,7 +121,8 @@
         <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
         <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
         <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
-        <input type="text" autofocus id="message" required name="message" placeholder="Type a message" />
+        <input type="text" autofocus id="message" onfocusout="myFunction()" required name="message"
+          placeholder="Type a message" />
         <button type="submit">send</button>
       </form>
     </section>
