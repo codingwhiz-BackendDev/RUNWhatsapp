@@ -380,6 +380,7 @@
     <div class="upheader">
         <h2 style="padding-top: 20px;">RunWhatsApp</h2>
         <div class="dropdown">
+            {% if request.user.is_authenticated %}
             {% if profile.image.url %}
             <img style="padding-top: 20px;" class="img dropbtn" onclick="myFunction()" src="{{profile.image.url}}"
                 alt="">
@@ -389,6 +390,8 @@
                 <a href="logout">Logout</a>
             </div>
             {% else %}
+            {% endif %}
+            {% if not request.user.is_authenticated %}
             <img style="padding-top: 20px;" class="img dropbtn" onclick="myFunction()" src="{% static 'blank.png' %}"
                 alt="">
             <div id="myDropdown" class="dropdown-content">
@@ -396,6 +399,7 @@
                 <a href="/settings">Profile setttings</a>
                 <a href="logout">Logout</a>
             </div>
+            {% endif %}
             {% endif %}
         </div>
     </div>

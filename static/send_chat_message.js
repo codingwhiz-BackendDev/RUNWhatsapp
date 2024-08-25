@@ -60,6 +60,9 @@ $(document).ready(function () {
                 document.body.onmouseenter = () => {
                     document.body.classList.add("active");
                 }
+                document.body.onscroll = () => {
+                    document.body.classList.add("active");
+                }
                 document.body.onmouseleave = () => {
                     document.body.classList.remove("active");
                 }
@@ -72,11 +75,3 @@ $(document).ready(function () {
     }, 100)
 })
 
-
-function deletes() {
-    alert('hshsh')
-}
-hey = document.getElementById('leading-6').innerHTML
-
-deletes()
-console.log(document.body.classList)
