@@ -61,7 +61,7 @@ $(document).ready(function () {
                     document.body.classList.add("active");
                 }
                 function myFunction() {
-                    document.body.classList.remove("active");
+                    document.body.classList.add("active");
                 }
                 document.body.onscroll = () => {
                     document.body.classList.add("active");
