@@ -60,7 +60,7 @@ $(document).ready(function () {
                 document.body.onmouseenter = () => {
                     document.body.classList.add("active");
                 }
-                function myFunction() {
+                function endScroll() {
                     document.body.classList.add("active");
                 }
                 document.body.onscroll = () => {
