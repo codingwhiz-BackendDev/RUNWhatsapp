@@ -10,27 +10,67 @@
 <body>
     {% block content %}
     <main>
+        <div style="width: 100%; max-width:400px">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" style="border-radius: 20px;" name="search" placeholder="search">
+            </form>
+        </div>
+
         {% for contacts in mycontact %}
         <section class="chat-window">
             <div class="chat-header">
-                <a href="/contact_profile/{{contacts.phone_number}}"><img src="{{contacts.image.url}}"
-                        alt="Profile Picture" /></a>
-                <h2>
-                    <a href="/contact_profile/{{contacts.phone_number}}" style="color: black">{{contacts}}</a>
-                </h2>
+                <a href="/contact_profile/{{contacts.phone_number}}">
+                    <img src="{{contacts.image.url}}" alt="Profile Picture" />
+                </a>
+
+                <span>
+                    <a href="/contact_profile/{{contacts.phone_number}}"
+                        style="color: black; font-size:larger;font-weight:bolder">{{contacts}}
+                    </a>
+
+
+                    <a href="chat/{{contacts.phone_number}}">
+                        <div>
+                            <h5 style="color: black; font-family: monospace;">
+                                {{contacts.last_message|truncatewords:7}}
+                            </h5>
+                            <input type="hidden" name="" value="{{contacts.phone_number}}" id="contact_number" />
+                        </div>
+                    </a>
+                </span>
             </div>
-            <a href="chat/{{contacts.phone_number}}">
-                <div>
-                    <h5 style="color: black; font-family: monospace">
-                        {{contacts.last_message|truncatewords:7}}
-                    </h5>
-                    <input type="hidden" name="" value="{{contacts.phone_number}}" id="contact_number" />
-                </div>
-            </a>
         </section>
         {% endfor %}
 
-        {% if not mycontact %}
+
+        {% for contacts in result %}
+        <section class="chat-window">
+            <div class="chat-header">
+                <a href="/contact_profile/{{contacts.phone_number}}">
+                    <img src="{{contacts.image.url}}" alt="Profile Picture" />
+                </a>
+
+                <span>
+                    <a href="/contact_profile/{{contacts.phone_number}}"
+                        style="color: black; font-size:larger;font-weight:bolder">{{contacts}}
+                    </a>
+
+
+                    <a href="chat/{{contacts.phone_number}}">
+                        <div>
+                            <h5 style="color: black; font-family: monospace;">
+                                {{contacts.last_message|truncatewords:7}}
+                            </h5>
+                            <input type="hidden" name="" value="{{contacts.phone_number}}" id="contact_number" />
+                        </div>
+                    </a>
+                </span>
+            </div>
+        </section>
+        {% endfor %}
+
+        {% if not mycontact and not result %}
         <div class="chat-window">
             <marquee behavior="" direction="">
                 <p style="text-align: center;">Welcome to RunWhatsApp !, Add contacts, explore our feautures
@@ -38,8 +78,12 @@
                 </p>
             </marquee>
         </div>
-
         {% endif %}
+
+
+
+
+
 
 
         <!-- {% for contacts in people_with_mycontact %}
