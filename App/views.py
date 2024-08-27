@@ -12,28 +12,29 @@ from datetime import datetime, timedelta
 def index(request): 
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
-    
     if request.method == 'POST':
         search = request.POST['search']
-        result = myContact.objects.filter(Q(user=user)|Q(contact__icontains = search))
+        result = myContact.objects.filter(contact__icontains =search ,user_phone_number=request.user)
+        print(result)
         
-        return render(request, 'index.html', {'result':result})
-    
-    mycontact = myContact.objects.filter(user_phone_number= user)
+        return render(request, 'index.html', {'result':result,'profile':profile})
+    else:
+        
+        mycontact = myContact.objects.filter(user_phone_number= user)
  
-    people_with_mycontact = myContact.objects.filter(phone_number = user) 
-    all_contact = myContact.objects.all()
+        people_with_mycontact = myContact.objects.filter(phone_number = user) 
+        all_contact = myContact.objects.all()
     
     
-    context = {
-        'mycontact':mycontact,
-        'profile':profile,
-        'people_with_mycontact':people_with_mycontact,
-        'all_contact':all_contact,
+        context = {
+            'mycontact':mycontact,
+            'profile':profile,
+            'people_with_mycontact':people_with_mycontact,
+            'all_contact':all_contact,
         
-    }
+        }
     
-    return render(request, 'index.html', context)
+        return render(request, 'index.html', context)
 
 def register(request):
     if request.method == 'POST':
@@ -117,7 +118,7 @@ def add_contact(request):
                     # CREATE CONTACT AT THE OTHER END
                     contact_user2 =  User.objects.get(username=loggedInUserNumber)
                     contact_profile2 = Profile.objects.get(username = contact_user2) 
-                    contacts2 = myContact.objects.create(user=contact_profile2.first_name,contact=contact_profile2.first_name , phone_number=loggedInUserNumber, user_phone_number=name, image=contact_profile2.image, bio=contact_profile2.bio)
+                    contacts2 = myContact.objects.create(user=first_name,contact=loggedInUser, phone_number=loggedInUserNumber, user_phone_number=name, image=contact_profile2.image, bio=contact_profile2.bio)
                     
                     contacts2.save()
                     return redirect('/')
