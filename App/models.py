@@ -23,6 +23,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=255, null=True,)
     username = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
     bio = models.TextField()
+    last_activity = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return str(self.username)

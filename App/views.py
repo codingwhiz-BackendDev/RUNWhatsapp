@@ -6,6 +6,8 @@ from .models import myContact, Profile, Status, Message, Communities, Group_comm
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
+import pytz
+from django.contrib.sessions.models import Session
 # Create your views here.
 
 @login_required(login_url='login')
@@ -186,6 +188,9 @@ def chat(request, pk):
     profile = Profile.objects.get(username=get_user)
     pk=pk  
     contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
+    
+    online_user = Profile.objects.get(username=get_user)
+ 
     context = {
         'contact':contact,
         'profile':profile,
