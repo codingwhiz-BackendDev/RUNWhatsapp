@@ -235,6 +235,7 @@ def status(request):
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
     user_status = Status.objects.all()
+    
     user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
     # print(user_contacts)
     

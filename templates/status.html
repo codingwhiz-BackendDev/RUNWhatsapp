@@ -14,16 +14,29 @@
   {% block content %}
   <main>
     <section class="status">
+      <h2 style="text-align: center;">Status</h2>
       <div class="image-container">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
-        <img class="img" src="{% static 'blank.png' %}" alt="Snow">
+        {% for status in user_status reversed %}
+
+        {% if status.image %}
+        <a href=""><img class="img" src="{{status.image.url}}" alt="Snow"></a>
+        <a href=""><img class="img" src="{{status.image.url}}" alt="Snow"></a>
+        <a href=""><img class="img" src="{{status.image.url}}" alt="Snow"></a>
+        <a href=""><img class="img" src="{{status.image.url}}" alt="Snow"></a>
+        {% endif %}
+
+        {% endfor %}
+
+
+        {% if not user_status %}
+        <div class="chat-window">
+          <marquee behavior="" direction="">
+            <p>No staus to view
+            </p>
+          </marquee>
+        </div>
+        {% endif %}
+
       </div>
     </section>
   </main>
