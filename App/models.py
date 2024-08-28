@@ -29,11 +29,15 @@ class Profile(models.Model):
         return str(self.username)
     
 class Status(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='Status', null= True)
+    video = models.FileField(upload_to='Status', null= True)
+    time = models.DateTimeField(auto_now_add=True)
+    
+    
+class UserStatus(models.Model):
     user =  models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    image = models.FileField(upload_to='Status', null=True)
-    video = models.FileField(upload_to='Status', null=True)
-    text = models.TextField()
-    time = models.DateTimeField(default=datetime.now)
+    status = models.ForeignKey(Status,on_delete=models.CASCADE)
      
     def __str__(self):
         return str(self.user)
