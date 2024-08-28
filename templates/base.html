@@ -43,7 +43,7 @@
             text-align: center;
             width: 100%;
             display: grid;
-            grid-template-columns: auto auto;
+            grid-template-columns: auto auto auto;
             grid-gap: 1px;
             position: sticky;
             top: 0;
@@ -55,7 +55,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem;
+            padding: 1rem;
         }
 
 
@@ -341,8 +341,12 @@
 <body>
     <div class="upheader">
         <h2 style="padding-top: 20px;">RunWhatsApp</h2>
+        {% if request.user.is_authenticated %}
+        <h2><a href="post_status">
+                <span class="fa fa-camera" style="padding-top: 25px;" class="img dropbtn" title="Chats"></span>
+            </a>
+        </h2>
         <div class="dropdown">
-            {% if request.user.is_authenticated %}
             {% if profile.image.url %}
             <img style="padding-top: 20px;" class="img dropbtn" onclick="myFunction()" src="{{profile.image.url}}"
                 alt="">
