@@ -7,7 +7,11 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 import pytz
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> ad4cde0fb18e2586965b55cb4e7e0b9f75138ad8
 # Create your views here.
 
 @login_required(login_url='login')
