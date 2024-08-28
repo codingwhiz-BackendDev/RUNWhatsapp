@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 import pytz
 from django.contrib.sessions.models import Session
+from .utils import is_user_online
 # Create your views here.
 
 @login_required(login_url='login')
@@ -79,6 +80,7 @@ def login(request):
         
         user = auth.authenticate(username=username, password=password)
         if user is not None:
+            request.session['user_id'] = user.id
             auth.login(request, user)
             return redirect('index')
         else:
@@ -189,7 +191,7 @@ def chat(request, pk):
     pk=pk  
     contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
     
-    online_user = Profile.objects.get(username=get_user)
+ 
  
     context = {
         'contact':contact,
