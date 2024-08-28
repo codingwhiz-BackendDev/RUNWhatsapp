@@ -29,8 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["coding74whiz.pythonanywhere.com"]
 
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
