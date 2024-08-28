@@ -261,15 +261,28 @@ def post_status(request):
         video = request.FILES.get('video') 
         
         if UserStatus.objects.filter(user=user).exists():
-            status = Status.objects.create(user=user, text=text, image=image, video=video)
-                
+            user_status = UserStatus.objects.filter(user=user) 
+            
+            for users in user_status:
+                users.image = image
+                users.save()
+            
+            status = Status.objects.create(user=user, text=text, video=video)
             status.save()
         else:
             status = Status.objects.create(user=user, text=text, image=image, video=video)
             user_status = UserStatus.objects.create(user=user)
-            
-            status.save()
             user_status.save()
+            
+            get_user_status = UserStatus.objects.filter(user=user) 
+            
+            for user in get_user_status:
+                user.image = image
+                user.save()
+            
+                        
+            status.save()
+            
         
         
         
