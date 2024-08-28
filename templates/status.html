@@ -1,12 +1,44 @@
 {% extends 'base.html' %}
+{% load static %}
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %} Status Page {% endblock title %}</title>
-  <style></style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .column {
+      float: left;
+      width: 33.33%;
+      padding: 5px;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  </style>
 </head>
 
 <body>
+  {% block content %}
+  <main>
+    <section class="status">
+      <div class="row">
+        <div class="column">
+          <img src="{% static 'blank.png' %}" alt="Snow" style="width:100%">
+        </div>
+        <div class="column">
+          <img src="{% static 'blank.png' %}" alt="Snow" style="width:100%">
+        </div>
+      </div>
+    </section>
+  </main>
+  {% endblock %}
 </body>
