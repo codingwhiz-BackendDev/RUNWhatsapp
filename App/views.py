@@ -6,6 +6,9 @@ from .models import myContact, Profile, Status, Message, Communities, Group_comm
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
+import pytz
+from django.contrib.sessions.models import Session
+from .utils import is_user_online
 # Create your views here.
 
 @login_required(login_url='login')
@@ -14,7 +17,7 @@ def index(request):
     user = User.objects.get(username=request.user)
     if request.method == 'POST':
         search = request.POST['search']
-        result = myContact.objects.filter(contact__icontains =search ,user_phone_number=request.user)
+        result = myContact.objects.filter(contact__icontains = search ,user_phone_number=request.user)
         print(result)
         
         return render(request, 'index.html', {'result':result,'profile':profile})
@@ -77,6 +80,7 @@ def login(request):
         
         user = auth.authenticate(username=username, password=password)
         if user is not None:
+            request.session['user_id'] = user.id
             auth.login(request, user)
             return redirect('index')
         else:
@@ -184,9 +188,18 @@ def settings(request):
 def chat(request, pk):
     get_user =  User.objects.get(username=pk)
     profile = Profile.objects.get(username=get_user)
-    pk=pk 
+    pk=pk  
+    contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
+    
  
-    return render(request, 'chat.html', {'profile':profile, 'get_user':get_user,'pk':pk})
+ 
+    context = {
+        'contact':contact,
+        'profile':profile,
+        'get_user':get_user,
+        'pk':pk
+    }
+    return render(request, 'chat.html', context)
 
 @login_required(login_url='login')
 def send_message(request):

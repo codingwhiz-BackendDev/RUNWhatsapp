@@ -29,12 +29,16 @@ DEBUG = True
 
 DEBUG = True
 #'192.168.43.87'
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['coding74whiz.pythonanywhere.com']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 
+=======
+ALLOWED_HOSTS = ['coding74whiz.pythonanywhere.com'] 
+>>>>>>> 319e0f6b3d1ac1ad683fad32ba084a92af328ce8
 
 
 # Application definition
