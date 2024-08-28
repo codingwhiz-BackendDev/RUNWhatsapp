@@ -234,20 +234,10 @@ def get_chat_message(request, pk):
 def status(request): 
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    user_status = UserStatus.objects.all()
-    status =  Status.objects.all()
-    for user_status in status:
-        status = Status.objects.all()
-        status_obj = User.objects.get(username=user_status) 
-        real_status = Status.objects.filter(user=status_obj)
-         
-        print(real_status)
+    real_status = UserStatus.objects.all()
     
-        user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
          
-      
-        return render(request, 'status.html', {'profile':profile, 'real_status':real_status})
-    return render(request, 'status.html', {'profile':profile,})
+    return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
 @login_required(login_url='login')
 def write_status(request):
