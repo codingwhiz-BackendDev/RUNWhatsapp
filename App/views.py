@@ -260,15 +260,24 @@ def post_status(request):
         image = request.FILES.get('image')
         video = request.FILES.get('video') 
         
-        if UserStatus.objects.filter(user=user).exists():
-            user_status = UserStatus.objects.filter(user=user) 
+        if UserStatus.objects.filter(user=user).exists():            
+            if request.FILES.get('image') != None:
+                user_status = UserStatus.objects.filter(user=user) 
+                for users in user_status:
+                    users.image = image
+                    users.save()
+                    
+                image_status = Status.objects.create(user=user, text=text)
+                image_status.save()
             
-            for users in user_status:
-                users.image = image
-                users.save()
+            else:   
+                user1_status = UserStatus.objects.filter(user=user)  
+                for user1 in  user1_status:
+                    user1.video = video
+                    user1.save()
             
-            status = Status.objects.create(user=user, text=text, video=video)
-            status.save()
+                video_status = Status.objects.create(user=user, text=text)
+                video_status.save()
         else:
             status = Status.objects.create(user=user, text=text, image=image, video=video)
             user_status = UserStatus.objects.create(user=user)
@@ -276,9 +285,15 @@ def post_status(request):
             
             get_user_status = UserStatus.objects.filter(user=user) 
             
-            for user in get_user_status:
-                user.image = image
-                user.save()
+            if request.FILES.get('image') != None:
+                for user in get_user_status:
+                    user.image = image
+                    user.save()
+            
+            if request.FILES.get('video') != None:
+                for user in get_user_status:
+                    user.video = video
+                    user.save()
             
                         
             status.save()
