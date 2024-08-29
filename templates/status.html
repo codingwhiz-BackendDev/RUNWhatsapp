@@ -20,18 +20,18 @@
 
         {% for real_status in real_status %}
 
-        {% if real_status.file %}
-        <a href=""><img class="img" src="{{real_status.file.url}}" alt="Snow"></a>
+        {% if real_status.image %}
+        <a href=""><img class="img" src="{{real_status.image.url}}" alt="Snow"></a>
 
         {% endif %}
 
-        {% if real_status.file %}
+        {% if real_status.video %}
 
         <a href="">
           <div>
             <video width="85" height="85" style="border-radius: 50%;">
-              <source src="{{real_status.file.url}}" type="video/mp4">
-              <source src="{{real_status.file.url}}" type="video/ogg">
+              <source src="{{real_status.video.url}}" type="video/mp4">
+              <source src="{{real_status.video.url}}" type="video/ogg">
             </video>
           </div>
         </a>

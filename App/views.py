@@ -239,6 +239,11 @@ def status(request):
     return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
 @login_required(login_url='login')
+def view_status(request, pk): 
+    status = Status.objects.filter(user=pk)
+    return render(request, 'view_status.html')
+    
+@login_required(login_url='login')
 def write_status(request):
     profile = Profile.objects.get(username=request.user)
     if request.method == 'POST': 
@@ -267,13 +272,15 @@ def post_status(request):
             
             if request.FILES.get('image') != None:
                 for user in user_status:
-                    user.file = image
+                    user.image = image
                     user.save()   
+                    user.video.delete()
                     
             if request.FILES.get('video') != None:         
                 for user in user_status:
-                    user.file = video
+                    user.video = video
                     user.save()           
+                    user.image.delete()
  
         else:
             status = Status.objects.create(user=user, text=text, image=image, video=video)
@@ -284,12 +291,12 @@ def post_status(request):
             
             if request.FILES.get('image') != None:
                 for user in get_user_status:
-                    user.file = image
+                    user.image = image
                     user.save()
             
             if request.FILES.get('video') != None:
                 for user in get_user_status:
-                    user.file = video
+                    user.video = video
                     user.save()
             
                         
