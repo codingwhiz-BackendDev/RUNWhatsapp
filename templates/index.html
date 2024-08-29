@@ -101,3 +101,11 @@
 </body>
 
 </html>
+if request.FILES.get('video'):
+user1_status = UserStatus.objects.filter(user=user)
+for user1 in user1_status:
+user1.video = video
+user1.save()
+
+video_status = Status.objects.create(user=user, text=text)
+video_status.save()
