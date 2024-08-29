@@ -240,8 +240,10 @@ def status(request):
 
 @login_required(login_url='login')
 def view_status(request, pk): 
-    status = Status.objects.filter(user=pk)
-    return render(request, 'view_status.html')
+    user = User.objects.get(username=pk)
+    status = Status.objects.filter(user=user)
+    print(status)
+    return render(request, 'view_status.html', {'status':status})
     
 @login_required(login_url='login')
 def write_status(request):
