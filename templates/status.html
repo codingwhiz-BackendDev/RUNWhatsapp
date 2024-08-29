@@ -20,10 +20,18 @@
 
         {% for real_status in real_status %}
 
-        {% if real_status.image %}
-        <a href="view_status/{{real_status.user}}"><img class="img" src="{{real_status.image.url}}" alt="Snow"></a>
+        <div>
+          {% if real_status.image %}
 
-        {% endif %}
+          <a href="view_status/{{real_status.user}}"><img class="img" src="{{real_status.image.url}}" alt="Snow"></a>
+
+          {% if real_status.user == request.user %}
+          <p>My Status</p>
+          {% endif %}
+
+          {% endif %}
+
+        </div>
 
         {% if real_status.video %}
 

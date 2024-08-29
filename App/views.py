@@ -14,16 +14,18 @@ import pytz
 def index(request): 
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
+    
+    # If the logged in user searches for a contact
     if request.method == 'POST':
         search = request.POST['search']
         result = myContact.objects.filter(contact__icontains = search ,user_phone_number=request.user)
-        print(result)
+        
         
         return render(request, 'index.html', {'result':result,'profile':profile})
     else:
         
         mycontact = myContact.objects.filter(user_phone_number= user)
- 
+        print(mycontact)
         people_with_mycontact = myContact.objects.filter(phone_number = user) 
         all_contact = myContact.objects.all()
     
@@ -235,14 +237,19 @@ def status(request):
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
     real_status = UserStatus.objects.all()    
+    mycontact = myContact.objects.filter(user_phone_number= user)
+    print(mycontact)
+    for contacts in mycontact: 
+        contact = contacts.contact
+        print(contact)
          
-    return render(request, 'status.html', {'profile':profile,'real_status':real_status})
+        return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
 @login_required(login_url='login')
 def view_status(request, pk): 
     user = User.objects.get(username=pk)
-    status = Status.objects.filter(user=user)
-    print(status)
+    print(user)
+    status = Status.objects.filter(user=user) 
     return render(request, 'view_status.html', {'status':status})
     
 @login_required(login_url='login')
