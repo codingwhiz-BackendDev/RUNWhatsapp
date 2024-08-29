@@ -21,13 +21,13 @@
         {% for real_status in real_status %}
 
         {% if real_status.image %}
-        <a href=""><img class="img" src="{{real_status.image.url}}" alt="Snow"></a>
+        <a href=""><img class="img" src="{{real_status.file.url}}" alt="Snow"></a>
         {% endif %}
 
         {% if real_status.video %}
         <video width="320" height="240" controls>
-          <source class="img" src="{{real_status.video.url}}" type="video/mp4">
-          <source class="img" src="{{real_status.video.url}}" type="video/ogg">
+          <source class="img" src="{{real_status.file.url}}" type="video/mp4">
+          <source class="img" src="{{real_status.file.url}}" type="video/ogg">
         </video>
         {% endif %}
 

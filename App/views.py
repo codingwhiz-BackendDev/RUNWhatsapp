@@ -268,12 +268,12 @@ def post_status(request):
             
             if request.FILES.get('image') != None:
                 for user in user_status:
-                    user.image = image
+                    user.file = image
                     user.save()   
                     
             if request.FILES.get('video') != None:         
                 for user in user_status:
-                    user.video = video
+                    user.file = video
                     user.save()           
  
         else:
@@ -285,12 +285,12 @@ def post_status(request):
             
             if request.FILES.get('image') != None:
                 for user in get_user_status:
-                    user.image = image
+                    user.file = image
                     user.save()
             
             if request.FILES.get('video') != None:
                 for user in get_user_status:
-                    user.video = video
+                    user.file = video
                     user.save()
             
                         

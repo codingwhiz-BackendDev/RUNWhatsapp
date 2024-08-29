@@ -40,8 +40,7 @@ class Status(models.Model):
     
     
 class UserStatus(models.Model):
-    image = models.ImageField(upload_to='Status', null= True)
-    video = models.FileField(upload_to='Status', null= True)
+    file = models.FileField(upload_to='Status', max_length=100, null=True)
     user =  models.ForeignKey(User, on_delete=models.CASCADE, null=True) 
      
     def __str__(self):
