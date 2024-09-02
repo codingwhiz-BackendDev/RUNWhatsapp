@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import myContact, Profile, Status, Message, Communities, Group_comment
+from .models import myContact, Profile, Status, Message, Communities, Group_comment, UserStatus
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
@@ -234,23 +234,20 @@ def get_chat_message(request, pk):
 def status(request): 
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    user_status = Status.objects.all()
+    user_status = UserStatus.objects.all()
+    status =  Status.objects.all()
+    for user_status in status:
+        status = Status.objects.all()
+        status_obj = User.objects.get(username=user_status) 
+        real_status = Status.objects.filter(user=status_obj)
+         
+        print(real_status)
     
-    user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
-    # print(user_contacts)
-    
-    for profiles in Status.objects.all():
-        profiles = User.objects.get(username=profiles)
-        status_profile = Profile.objects.get(username=profiles)
-        status = Status.objects.filter(user=profiles)
-        print(status)
-        # print(status_profile.first_name)
-                
-            
-                
-        
-    return render(request, 'status.html', {'profile':profile, 'user_status':user_status})
-
+        user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
+         
+      
+        return render(request, 'status.html', {'profile':profile, 'real_status':real_status})
+    return render(request, 'status.html', {'profile':profile,})
 
 @login_required(login_url='login')
 def write_status(request):
@@ -266,13 +263,25 @@ def write_status(request):
 @login_required(login_url='login')
 def post_status(request):
     profile = Profile.objects.get(username=request.user)
+    user = User.objects.get(username=request.user)
+    print(user)
     if request.method == 'POST': 
-        user = User.objects.get(username=request.user)
         text = request.POST['text']
         image = request.FILES.get('image')
         video = request.FILES.get('video') 
-        status = Status.objects.create(user=user, text=text, image=image, video=video)
-        status.save()
+        
+        if UserStatus.objects.filter(user=user).exists():
+            status = Status.objects.create(user=user, text=text, image=image, video=video)
+                
+            status.save()
+        else:
+            status = Status.objects.create(user=user, text=text, image=image, video=video)
+            user_status = UserStatus.objects.create(user=user)
+            
+            status.save()
+            user_status.save()
+        
+        
         
         return redirect('status')
     return render(request, 'post_status.html', {'profile':profile})

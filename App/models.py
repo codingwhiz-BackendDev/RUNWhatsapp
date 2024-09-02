@@ -33,11 +33,14 @@ class Status(models.Model):
     image = models.ImageField(upload_to='Status', null= True)
     video = models.FileField(upload_to='Status', null= True)
     time = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(null=True)
+    
+    def __str__(self):
+        return str(self.user)
     
     
 class UserStatus(models.Model):
-    user =  models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    status = models.ForeignKey(Status,on_delete=models.CASCADE)
+    user =  models.ForeignKey(User, on_delete=models.CASCADE, null=True) 
      
     def __str__(self):
         return str(self.user)

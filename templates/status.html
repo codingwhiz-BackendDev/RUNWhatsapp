@@ -16,16 +16,16 @@
     <section class="status">
       <h2 style="text-align: center;">Status</h2>
       <div class="image-container">
-        {% for status in user_status reversed %}
 
-        {% if status.image %}
-        <a href=""><img class="img" src="{{status.image.url}}" alt="Snow"></a>
-        {% endif %}
 
+        {% for real_status in real_status %}
+        <a href=""><img class="img" src="{{real_status.image.url}}" alt="Snow"></a>
         {% endfor %}
 
 
-        {% if not user_status %}
+
+
+        {% if not real_status %}
         <div class="chat-window">
           <marquee behavior="" direction="">
             <p>No staus to view
