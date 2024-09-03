@@ -234,8 +234,7 @@ def get_chat_message(request, pk):
 def status(request): 
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    real_status = UserStatus.objects.all()
-    
+    real_status = UserStatus.objects.all()    
          
     return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
