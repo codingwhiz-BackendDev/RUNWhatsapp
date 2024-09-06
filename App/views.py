@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import myContact, Profile, Status, Message, Communities, Group_comment
+from .models import myContact, Profile, Status, Message, Communities, Group_comment, UserStatus
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
@@ -18,17 +18,29 @@ import pytz
 def index(request):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
+    
+    # If the logged in user searches for a contact
     if request.method == 'POST':
         search = request.POST['search']
         result = myContact.objects.filter(contact__icontains = search ,user_phone_number=request.user)
+<<<<<<< HEAD
         print(result)
 
+=======
+        
+        
+>>>>>>> 01a94740974bb4adbd00d1d88fd694088b8ca406
         return render(request, 'index.html', {'result':result,'profile':profile})
     else:
 
         mycontact = myContact.objects.filter(user_phone_number= user)
+<<<<<<< HEAD
 
         people_with_mycontact = myContact.objects.filter(phone_number = user)
+=======
+        print(mycontact)
+        people_with_mycontact = myContact.objects.filter(phone_number = user) 
+>>>>>>> 01a94740974bb4adbd00d1d88fd694088b8ca406
         all_contact = myContact.objects.all()
 
 
@@ -238,6 +250,7 @@ def get_chat_message(request, pk):
 def status(request):
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
+<<<<<<< HEAD
     user_status = Status.objects.all()
     user_contacts = myContact.objects.filter(Q(user_phone_number = user)| Q(phone_number = user))
     # print(user_contacts)
@@ -254,7 +267,24 @@ def status(request):
 
     return render(request, 'status.html', {'profile':profile, 'user_status':user_status})
 
+=======
+    real_status = UserStatus.objects.all()    
+    mycontact = myContact.objects.filter(user_phone_number= user)
+    print(mycontact)
+    for contacts in mycontact: 
+        contact = contacts.contact
+        print(contact)
+         
+        return render(request, 'status.html', {'profile':profile,'real_status':real_status})
+>>>>>>> 01a94740974bb4adbd00d1d88fd694088b8ca406
 
+@login_required(login_url='login')
+def view_status(request, pk): 
+    user = User.objects.get(username=pk)
+    print(user)
+    status = Status.objects.filter(user=user) 
+    return render(request, 'view_status.html', {'status':status})
+    
 @login_required(login_url='login')
 def write_status(request):
     profile = Profile.objects.get(username=request.user)
@@ -269,6 +299,7 @@ def write_status(request):
 @login_required(login_url='login')
 def post_status(request):
     profile = Profile.objects.get(username=request.user)
+<<<<<<< HEAD
     if request.method == 'POST':
         user = User.objects.get(username=request.user)
         text = request.POST['text']
@@ -277,6 +308,56 @@ def post_status(request):
         status = Status.objects.create(user=user, text=text, image=image, video=video)
         status.save()
 
+=======
+    user = User.objects.get(username=request.user)
+    print(user)
+    if request.method == 'POST': 
+        text = request.POST['text']
+        image = request.FILES.get('image')
+        video = request.FILES.get('video') 
+        
+        if UserStatus.objects.filter(user=user).exists():            
+            user_status = UserStatus.objects.filter(user=user)  
+            create_status = Status.objects.create(user=user,image=image, video=video, text=text)
+            
+            create_status.save()
+            
+            if request.FILES.get('image') != None:
+                for user in user_status:
+                    user.image = image
+                    user.save()   
+                    user.video.delete()
+                    
+            if request.FILES.get('video') != None:         
+                for user in user_status:
+                    user.video = video
+                    user.save()           
+                    user.image.delete()
+ 
+        else:
+            status = Status.objects.create(user=user, text=text, image=image, video=video)
+            user_status = UserStatus.objects.create(user=user)
+            user_status.save()
+            
+            get_user_status = UserStatus.objects.filter(user=user) 
+            
+            if request.FILES.get('image') != None:
+                for user in get_user_status:
+                    user.image = image
+                    user.save()
+            
+            if request.FILES.get('video') != None:
+                for user in get_user_status:
+                    user.video = video
+                    user.save()
+            
+                        
+            status.save()
+            
+        
+        
+        
+>>>>>>> 01a94740974bb4adbd00d1d88fd694088b8ca406
         return redirect('status')
     return render(request, 'post_status.html', {'profile':profile})
 

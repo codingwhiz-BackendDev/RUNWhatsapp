@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout', views.logout, name = 'logout'),
     path('write_status', views.write_status, name = 'write_status'),
     path("post_status", views.post_status, name='post_status'),
+    path('view_status/<str:pk>', views.view_status, name='view_status'),
     path("send_message", views.send_message, name='send_message'),
     path("contact_profile/<str:pk>", views.contact_profile, name='contact_profile'),
     path("get_chat_message/<str:pk>", views.get_chat_message, name='get_chat_message'), 

@@ -10,7 +10,7 @@
 <body>
     {% block content %}
     <main>
-        <div style="width: 100%; max-width:400px">
+        <div style="width: 100%; max-width:400px" id="div">
             <form action="" method="POST">
                 {% csrf_token %}
                 <input type="text" style="border-radius: 20px;" name="search" placeholder="search">
@@ -81,11 +81,6 @@
         {% endif %}
 
 
-
-
-
-
-
         <!-- {% for contacts in people_with_mycontact %}
         <section class="chat-window">
             <h4>
@@ -93,6 +88,12 @@
             </h4>
         </section>
         {% endfor %} -->
+        <a href="#div">
+            <span class="fa fa-arrow-up" style="bottom:11%;position:fixed;right:3%;font-size:20px;color: #333;"
+                title="Chats">
+            </span>
+        </a>
+        </span>
     </main>
     <br><br><br><br><br>
     {% endblock content %}
@@ -100,3 +101,11 @@
 </body>
 
 </html>
+if request.FILES.get('video'):
+user1_status = UserStatus.objects.filter(user=user)
+for user1 in user1_status:
+user1.video = video
+user1.save()
+
+video_status = Status.objects.create(user=user, text=text)
+video_status.save()
