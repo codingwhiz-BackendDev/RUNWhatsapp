@@ -134,9 +134,11 @@
         <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
         <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
         <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
-        <textarea name="message" placeholder="Type a message" autofocus required id="message" oninput="endScroll()"
-          cols="150" rows="2"></textarea>
-        <button type="submit">send</button>
+        <textarea name="message" style="border-radius: 7%;" placeholder="Type a message" autofocus required id="message"
+          oninput="endScroll()" cols="150"></textarea>
+        <button type="submit">
+          <span style="color: white; font-size:large; padding-top:7px" class="fa fa-send" title="Chats"></span>
+        </button>
       </form>
     </section>
   </main>
