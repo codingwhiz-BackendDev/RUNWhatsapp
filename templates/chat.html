@@ -99,17 +99,21 @@
 
 <body>
   <header>
-    <div class="logo" style="width: auto">
-      <div>
+    <div style="width: auto;display: grid; grid-template-columns: auto auto">
+      <div style="display: flex;">
         <img src="{{profile.image.url}}" alt="Profile Picture" />
+        <a style="padding: 5px; font-size:large" href="/contact_profile/{{pk}}">{{contact}}</a>
       </div>
-      <div>
-        <a href="/contact_profile/{{pk}}">{{contact}}</a>
-        <p></p>
-      </div>
-      <div>
-        <a href="/" style="text-decoration: none; color: white;"><span style="color: white;" class="fa fa-arrow-left"
-            style='font-size:20px;' title="Chats"></span>
+
+      <div style="display: grid; grid-template-columns: auto auto auto">
+        <a href="" style="text-decoration: none; color: white;">
+          <span style="color: white; font-size:large; padding-top:7px" class="fa fa-phone" title="Chats"></span>
+        </a>
+        <a href="" style="text-decoration: none; color: white;">
+          <span style="color: white; font-size:large; padding-top:7px" class="fa fa-video-camera" title="Chats"></span>
+        </a>
+        <a href="" style="text-decoration: none; color: white;">
+          <span style="color: white; font-size:large; padding-top:7px" class="fa fa-navicon" title="Chats"></span>
         </a>
       </div>
 
