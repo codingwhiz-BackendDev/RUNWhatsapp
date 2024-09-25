@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from .models import myContact, Profile, Status, Message, Communities, Group_comment, UserStatus
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
-from datetime import datetime, timedelta
-import pytz
+import datetime
+from django.utils import timezone
  
 # Create your views here.
 
@@ -238,10 +238,36 @@ def status(request):
     profile = Profile.objects.get(username=request.user)
     real_status = UserStatus.objects.all()    
     mycontact = myContact.objects.filter(user_phone_number= user)
-    print(mycontact)
+    
+   # last_minute = now - datetime.timedelta(seconds=60)
+     
+    status = Status.objects.all()
+    
+    # Get exactly 24hour the status model was created
+    for status in status:
+        now = timezone.now()
+        print(now)
+        print(status.time + datetime.timedelta(hours=1))
+        after_24Hours = status.time + datetime.timedelta(hours=24)
+        if now == after_24Hours or now >= after_24Hours:
+            print('Exactly 24 hours now')
+            status.delete()
+        else:
+            print('Not yet 24 hours')
+            
+    # Get exactly 24hour the Userstatus model was created
+    for status in real_status:
+        now = timezone.now() 
+        after_24Hours = status.time + datetime.timedelta(hours=24)
+        if now == after_24Hours or now >= after_24Hours:
+            print('Exactly 24 hours now')
+            status.delete()
+        else:
+            print('Not yet 24 hours')
+            
+        
     for contacts in mycontact: 
         contact = contacts.contact
-        print(contact)
          
         return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 

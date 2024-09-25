@@ -76,10 +76,12 @@
     {% if status.video %}
 
 
-    <video width="85" height="85" style="border-radius: 50%;">
+    <video autoplay>
         <source src="{{status.video.url}}" type="video/mp4">
         <source src="{{status.video.url}}" type="video/ogg">
     </video>
+
+
 
 
     {% endif %}

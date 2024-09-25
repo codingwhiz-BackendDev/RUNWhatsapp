@@ -5,8 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
+  <link rel="stylesheet" href="{% static 'font-awesome3/css/all.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
   <title>{{profile.first_name}} Chat Page</title>
   <style>
     body {
@@ -24,6 +25,8 @@
       top: 0;
       z-index: 1;
     }
+
+
 
     .logo {
       font-weight: bold;
@@ -64,6 +67,21 @@
       border-radius: 0.5rem;
       width: 300%;
     }
+
+    textarea {
+      padding: 4px;
+      -webkit-transition: none !important;
+      transition: none !important;
+      width: 100%;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 7px;
+      background-color: #f8f8f8;
+      font-size: 16px;
+      resize: none;
+    }
+
+
 
     .input-field button {
       background-color: #333;
@@ -128,17 +146,53 @@
       </div>
 
       <br><br>
-      <form id="send" method="POST" class="input-field">
+      <!-- Message form -->
+      <form id="send" method="POST" class="input-field" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" id="sender" name="sender" value="{{request.user}}" />
         <input type="hidden" id="receiver" name="receiver" value="{{profile.username}}" />
         <input type="hidden" id="receiverId" name="receiverId" value="{{get_user.id}}" />
         <input type="hidden" id="senderId" name="senderId" value="{{user.id}}" />
-        <textarea name="message" style="border-radius: 7%;" placeholder="Type a message" autofocus required id="message"
-          oninput="endScroll()" cols="150"></textarea>
-        <button type="submit">
-          <span style="color: white; font-size:large; padding-top:7px" class="fa fa-send" title="Chats"></span>
+
+
+        <textarea id="message" oninput="endScroll()" name="message" autofocus placeholder="Type a message"></textarea>
+
+        <!-- Submit button -->
+        <button type="submit" class="header-links-item">
+          <span class="fa fa-send" style='font-size:20px;'></span>
         </button>
+
+        <!-- Drop down to select file type -->
+        <label class="header-links-item absolute bottom-0 flex h-full items-center text-xl space-x-2 camera-icon">
+          <input type="checkbox" id="dropdown-toggle" style="display: none;" />
+          <span class="fa fa-camera" style='font-size:20px;'></span>
+        </label>
+
+        <div class="header_dropdown">
+          <ul class="dropdown_scrollbar" data-simplebar>
+            <!-- Image icon -->
+            <li>
+              <div class="drop_content">
+                <label for="image">
+                  <span class="fa fa-image" style='font-size:20px;' title="Select Image"></span>
+                </label>
+                <input type="file" accept="image/*" style="display: none;" id="image" name="image" />
+              </div>
+            </li>
+            <br>
+            <!-- Video icon -->
+            <li>
+              <div class="drop_content">
+                <label for="video">
+                  <span class="fa fa-image" style='font-size:20px;' title="Select Video"></span>
+                </label>
+                <input type="file" id="video" style="display: none;" accept="video/*" name="video" />
+              </div>
+            </li>
+          </ul>
+        </div>
+
+
       </form>
     </section>
   </main>
@@ -149,7 +203,9 @@
   <script src="{% static 'assets/js/simplebar.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
 
-  <script src="{% static 'send_chat_message.js' %}"></script>
+  <script src="{% static 'send_chat_message.js' %}">
+
+  </script>
 </body>
 
 </html>

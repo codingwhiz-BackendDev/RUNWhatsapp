@@ -78,3 +78,8 @@ $(document).ready(function () {
     }, 100)
 })
 
+//     < textarea name = "message" style = "border-radius: 7%;" placeholder = "Type a message" autofocus required id = "message"
+// oninput = "endScroll()" cols = "150" ></textarea >
+//     <button type="submit">
+//         <span style="color: white; font-size:large; padding-top:7px" class="fa fa-send" title="Chats"></span>
+//     </button>
