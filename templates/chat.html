@@ -112,6 +112,32 @@
         width: 100%;
       }
     }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 7px;
+      right: 0;
+      overflow: auto;
+      text-align: left;
+      height: max-content;
+    }
+
+
+    .dropdown-content span {
+      color: gray;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .show {
+      display: block;
+    }
   </style>
 </head>
 
@@ -147,6 +173,7 @@
 
       <br><br>
       <!-- Message form -->
+
       <form id="send" method="POST" class="input-field" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" id="sender" name="sender" value="{{request.user}}" />
@@ -163,35 +190,35 @@
         </button>
 
         <!-- Drop down to select file type -->
-        <label class="header-links-item absolute bottom-0 flex h-full items-center text-xl space-x-2 camera-icon">
-          <input type="checkbox" id="dropdown-toggle" style="display: none;" />
-          <span class="fa fa-camera" style='font-size:20px;'></span>
-        </label>
+        <div class="dropdown">
+          <label class="header-links-item">
+            <span class="fa fa-camera" onclick="myFunction()" style="font-size:30px;"></span>
+          </label>
 
-        <div class="header_dropdown">
-          <ul class="dropdown_scrollbar" data-simplebar>
+          <div>
+
             <!-- Image icon -->
-            <li>
-              <div class="drop_content">
-                <label for="image">
-                  <span class="fa fa-image" style='font-size:20px;' title="Select Image"></span>
-                </label>
-                <input type="file" accept="image/*" style="display: none;" id="image" name="image" />
-              </div>
-            </li>
-            <br>
-            <!-- Video icon -->
-            <li>
-              <div class="drop_content">
-                <label for="video">
-                  <span class="fa fa-image" style='font-size:20px;' title="Select Video"></span>
-                </label>
-                <input type="file" id="video" style="display: none;" accept="video/*" name="video" />
-              </div>
-            </li>
-          </ul>
-        </div>
 
+            <div class="dropdown-content" id="myDropdown1">
+              <label for="image">
+                <span class="fa fa-image" style='font-size:20px;' title="Select Image"></span>
+              </label>
+              <input type="file" accept="image/*" style="display: none;" id="image" name="image" />
+            </div>
+
+            <br><br>
+            <!-- Video icon -->
+
+            <div class="dropdown-content" id="myDropdown">
+              <label for="video">
+                <span class="fa fa-file-movie-o" style='font-size:20px;' title="Select Video"></span>
+              </label>
+              <input type="file" id="video" style="display: none;" accept="video/*" name="video" />
+            </div>
+
+
+          </div>
+        </div>
 
       </form>
     </section>
@@ -203,7 +230,7 @@
   <script src="{% static 'assets/js/simplebar.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
 
-  <script src="{% static 'send_chat_message.js' %}">
+  <script src="{% static 'send_message.js' %}">
 
   </script>
 </body>

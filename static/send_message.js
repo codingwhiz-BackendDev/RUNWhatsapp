@@ -1,3 +1,8 @@
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown1").classList.toggle("show");
+}
+
 $(document).ready(function () {
     $(document).on('submit', '#send', function (e) {
         e.preventDefault()
