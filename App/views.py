@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 import datetime
 from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail
  
 # Create your views here.
 
@@ -236,9 +237,7 @@ def send_message(request):
                 contact.last_message = str(messages)
                 contact.save() 
         
-        # Get contact user is chatting with 
-        contact_chat = myContact.objects.get(user_phone_number=request.user, phone_number=receiver)    
-        print(contact)     
+         
         if image:
             fs = FileSystemStorage()  # Creates a filesystem storage instance
             filename = fs.save('Chat/' + str(image), image)  # Saves the image in the Chat folder
@@ -246,18 +245,19 @@ def send_message(request):
             messages.image = image_path  # Save the image path to the message object
             messages.save()
             for contact in mycontact:
-                contact.last_message = str(contact) + ' Sent a Photo Photo'
+                contact.last_message = ' Sent a Photo'
                 contact.save()
             
             
         # If video is provided, update the message with the video
         if video:
-            video_path = '/media/Chat/' + str(video)
-            print(video_path)
+            fs = FileSystemStorage()  # Creates a filesystem storage instance
+            filename = fs.save('Chat/' + str(video), video)  # Saves the image in the Chat folder
+            video_path = fs.url(filename)  # Gets the URL of the saved image
             messages.video = video_path
             messages.save()
             for contact in mycontact:
-                contact.last_message = 'Video'
+                contact.last_message = ' Sent a Video'
                 contact.save()
         
         
