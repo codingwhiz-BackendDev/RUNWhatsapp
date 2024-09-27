@@ -10,36 +10,40 @@ from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
  
+
+from datetime import datetime, timedelta
+import pytz
+
 # Create your views here.
 
 @login_required(login_url='login')
-def index(request): 
+def index(request):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
-    
+
     # If the logged in user searches for a contact
     if request.method == 'POST':
         search = request.POST['search']
         result = myContact.objects.filter(contact__icontains = search ,user_phone_number=request.user)
-        
-        
+
+
         return render(request, 'index.html', {'result':result,'profile':profile})
     else:
-        
+
         mycontact = myContact.objects.filter(user_phone_number= user)
         print(mycontact)
-        people_with_mycontact = myContact.objects.filter(phone_number = user) 
+        people_with_mycontact = myContact.objects.filter(phone_number = user)
         all_contact = myContact.objects.all()
-    
-    
+
+
         context = {
             'mycontact':mycontact,
             'profile':profile,
             'people_with_mycontact':people_with_mycontact,
             'all_contact':all_contact,
-        
+
         }
-    
+
         return render(request, 'index.html', context)
 
 def register(request):
@@ -47,25 +51,25 @@ def register(request):
         first_name = request.POST['username']
         username = request.POST['phone_number']
         email = request.POST['email']
-        password = request.POST['password'] 
-        password2 = request.POST['password2'] 
-        
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
         #The phone number is the username and the first_name is the html username
-        
+
         if password == password2:
             if User.objects.filter(username=username).exists():
                 messages.info(request, 'Phone number Already exists')
                 return redirect('register')
-                
+
             elif User.objects.filter(email=email).exists():
                 messages.info(request, 'Phone number Already exists')
-                return redirect('register') 
-                
+                return redirect('register')
+
             else:
                 user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
                 user.save()
-                
-                user_model = User.objects.get(first_name=first_name) 
+
+                user_model = User.objects.get(first_name=first_name)
                 print(user_model)
                 profile = Profile.objects.create(username=user_model,)
                 profile.save()
@@ -73,14 +77,14 @@ def register(request):
         else:
             return redirect('register')
             messages.info(request, 'Password does not match')
-        
+
     return render(request, 'register.html')
 
 def login(request):
     if request.method == 'POST':
         username = request.POST['phone_number']
         password = request.POST['password']
-        
+
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             request.session['user_id'] = user.id
@@ -97,47 +101,47 @@ def logout(request):
     return redirect('login')
 
 @login_required(login_url='login')
-def add_contact(request): 
+def add_contact(request):
     profile = Profile.objects.get(username=request.user)
     if request.method == 'POST':
         name = request.POST['username']
-        first_name = request.POST['first_name'] 
+        first_name = request.POST['first_name']
         loggedInUser = request.POST['loggedInUser']
         loggedInUserNumber = request.POST['loggedInUserNumber']
         user = request.user
-     
-        
+
+
         if str(name) == str(user):
             messages.info(request, 'Can"t add yourself on WhatsApp')
             return redirect('add_contact')
-        else: 
+        else:
             if User.objects.filter(username=name).exists():
                 if myContact.objects.filter(user_phone_number = loggedInUserNumber , phone_number = name).exists():
                     messages.info(request, 'Number is already in your contact')
                     return redirect('add_contact')
-                else: 
+                else:
                     # GET CONTACT PROFILE
-                    contact_user =  User.objects.get(username=name) 
-                    contact_profile = Profile.objects.get(username = contact_user) 
+                    contact_user =  User.objects.get(username=name)
+                    contact_profile = Profile.objects.get(username = contact_user)
                     contacts = myContact.objects.create(user=loggedInUser, phone_number=name, contact=first_name, user_phone_number=loggedInUserNumber, image=contact_profile.image, bio=contact_profile.bio)
                     contacts.save()
-                    
+
                     # CREATE CONTACT AT THE OTHER END
                     contact_user2 =  User.objects.get(username=loggedInUserNumber)
-                    contact_profile2 = Profile.objects.get(username = contact_user2) 
+                    contact_profile2 = Profile.objects.get(username = contact_user2)
                     contacts2 = myContact.objects.create(user=first_name,contact=loggedInUser, phone_number=loggedInUserNumber, user_phone_number=name, image=contact_profile2.image, bio=contact_profile2.bio)
-                    
+
                     contacts2.save()
                     return redirect('/')
-            else: 
+            else:
                 messages.info(request, 'Number is not on WhatsApp')
                 return redirect('add_contact')
 
-         
+
     return render(request, 'add_contact.html', {'profile':profile})
 
 @login_required(login_url='login')
-def settings(request): 
+def settings(request):
     profile = Profile.objects.get(username=request.user)
     if request.method == 'POST':
         if request.FILES.get('image') == None:
@@ -145,57 +149,57 @@ def settings(request):
             username = request.POST['username']
             first_name =  request.POST['first_name']
             bio = request.POST['bio']
-            
+
             profile.image = image
             profile.usernames = User.objects.get(username=request.user)
             profile.username = profile.usernames
-            profile.first_name = first_name 
+            profile.first_name = first_name
             profile.bio = bio
-            profile.save() 
-             
+            profile.save()
+
             mycontact = myContact.objects.filter(phone_number=username)
             for contact in mycontact:
                 print(contact)
-                contact.image = image 
+                contact.image = image
                 contact.bio = bio
                 contact.save()
-                print(contact.image) 
-            
-            
+                print(contact.image)
+
+
         else:
             image = request.FILES.get('image')
             username = request.POST['username']
             first_name =  request.POST['first_name']
-            bio = request.POST['bio'] 
-            
+            bio = request.POST['bio']
+
             profile.image = image
             profile.usernames = User.objects.get(username=request.user)
             profile.username = profile.usernames
-            profile.first_name = first_name 
+            profile.first_name = first_name
             profile.bio = bio
-            
-            profile.save() 
-             
+
+            profile.save()
+
             mycontact = myContact.objects.filter(phone_number=username)
             for contact in mycontact:
                 print(contact)
-                contact.image = image 
+                contact.image = image
                 contact.bio = bio
                 contact.save()
-                print(contact.image) 
-                 
-              
+                print(contact.image)
+
+
     return render(request, 'settings.html', {'profile': profile})
 
 @login_required(login_url='login')
 def chat(request, pk):
     get_user =  User.objects.get(username=pk)
     profile = Profile.objects.get(username=get_user)
-    pk=pk  
-    contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
-    
- 
- 
+    pk=pk
+    contact = myContact.objects.get(user_phone_number=request.user, phone_number=pk)
+
+
+
     context = {
         'contact':contact,
         'profile':profile,
@@ -209,9 +213,10 @@ def send_message(request):
     
     if request.method == 'POST':
         sender = request.POST['sender']
-        receiver = request.POST['receiver'] 
-        message = request.POST['message'] 
+        receiver = request.POST['receiver']
+        message = request.POST['message']
         receiverId =  request.POST['receiverId']
+
         senderId =  request.POST['senderId']    
         
         
@@ -265,8 +270,24 @@ def send_message(request):
 
             
             
+
+        senderId =  request.POST['senderId']
+
+        mycontact = myContact.objects.filter(Q(user_phone_number = receiver)|Q(phone_number = receiver)).exclude(~Q(user_phone_number=sender),~Q(phone_number=sender))
+
+        print(mycontact)
+
+        messages = Message.objects.create(sender=sender,receiverId=receiverId,senderId=senderId, receiver=receiver, message=message)
+        message = messages.save()
+
+
+
+        for contact in mycontact:
+            contact.last_message = str(messages)
+
+            contact.save() 
     return HttpResponse('Message sent')
- 
+
 @login_required(login_url='login')
 def get_chat_message(request, pk):
     user = request.user
@@ -274,11 +295,12 @@ def get_chat_message(request, pk):
     return JsonResponse({'messages':list(messages.values())})
 
 @login_required(login_url='login')
-def status(request): 
+def status(request):
     user = User.objects.get(username=request.user)
     profile = Profile.objects.get(username=request.user)
-    real_status = UserStatus.objects.all()    
+    real_status = UserStatus.objects.all()
     mycontact = myContact.objects.filter(user_phone_number= user)
+
     
    # last_minute = now - datetime.timedelta(seconds=60)
      
@@ -310,19 +332,26 @@ def status(request):
     for contacts in mycontact: 
         contact = contacts.contact
          
+
+    print(mycontact)
+    for contacts in mycontact:
+        contact = contacts.contact
+        print(contact)
+
+
         return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
 @login_required(login_url='login')
-def view_status(request, pk): 
+def view_status(request, pk):
     user = User.objects.get(username=pk)
     print(user)
-    status = Status.objects.filter(user=user) 
+    status = Status.objects.filter(user=user)
     return render(request, 'view_status.html', {'status':status})
-    
+
 @login_required(login_url='login')
 def write_status(request):
     profile = Profile.objects.get(username=request.user)
-    if request.method == 'POST': 
+    if request.method == 'POST':
         user = User.objects.get(username=request.user)
         text = request.POST['text']
         status = Status.objects.create(user=user, text=text)
@@ -335,52 +364,52 @@ def post_status(request):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
     print(user)
-    if request.method == 'POST': 
+    if request.method == 'POST':
         text = request.POST['text']
         image = request.FILES.get('image')
-        video = request.FILES.get('video') 
-        
-        if UserStatus.objects.filter(user=user).exists():            
-            user_status = UserStatus.objects.filter(user=user)  
+        video = request.FILES.get('video')
+
+        if UserStatus.objects.filter(user=user).exists():
+            user_status = UserStatus.objects.filter(user=user)
             create_status = Status.objects.create(user=user,image=image, video=video, text=text)
-            
+
             create_status.save()
-            
+
             if request.FILES.get('image') != None:
                 for user in user_status:
                     user.image = image
-                    user.save()   
+                    user.save()
                     user.video.delete()
-                    
-            if request.FILES.get('video') != None:         
+
+            if request.FILES.get('video') != None:
                 for user in user_status:
                     user.video = video
-                    user.save()           
+                    user.save()
                     user.image.delete()
- 
+
         else:
             status = Status.objects.create(user=user, text=text, image=image, video=video)
             user_status = UserStatus.objects.create(user=user)
             user_status.save()
-            
-            get_user_status = UserStatus.objects.filter(user=user) 
-            
+
+            get_user_status = UserStatus.objects.filter(user=user)
+
             if request.FILES.get('image') != None:
                 for user in get_user_status:
                     user.image = image
                     user.save()
-            
+
             if request.FILES.get('video') != None:
                 for user in get_user_status:
                     user.video = video
                     user.save()
-            
-                        
+
+
             status.save()
-            
-        
-        
-        
+
+
+
+
         return redirect('status')
     return render(request, 'post_status.html', {'profile':profile})
 
@@ -395,8 +424,8 @@ def contact_profile(request,pk):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=pk)
     contact = Profile.objects.get(username=user)
-    mycontact = myContact.objects.get(user_phone_number=request.user, phone_number=pk) 
-    
+    mycontact = myContact.objects.get(user_phone_number=request.user, phone_number=pk)
+
     if request.method == 'POST':
         contact_name =  request.POST['contact_name']
         mycontact.contact = contact_name
@@ -406,7 +435,7 @@ def contact_profile(request,pk):
 
 
 @login_required(login_url='login')
-def communities(request): 
+def communities(request):
     profile = Profile.objects.get(username=request.user)
     group = Group.objects.all()
     communities = Communities.objects.all()
@@ -414,14 +443,14 @@ def communities(request):
         group_name = request.POST['group_name']
         group_admin = request.POST['group_admin']
         group_pic = request.FILES.get('group_pic')
-        
-        if Group.objects.filter(name=group_name).exists(): 
+
+        if Group.objects.filter(name=group_name).exists():
             messages.info(request, 'Group Name Already Exists')
             return render(request, 'communities.html',{'profile':profile, 'communities':communities} )
         else:
-            group = Group.objects.create(name=group_name) 
+            group = Group.objects.create(name=group_name)
             group.save()
-            group = Group.objects.get(name=group_name) 
+            group = Group.objects.get(name=group_name)
             group_profile = Communities.objects.create(group_name=group, group_admin=group_admin, group_pic= group_pic)
             group_profile.save()
             return render(request, 'communities.html',{'profile':profile,'communities':communities} )
@@ -434,14 +463,14 @@ def view_community(request,pk):
     return render(request, 'community.html', {'profile':profile, 'pk':pk})
 
 
-@login_required(login_url='login') 
+@login_required(login_url='login')
 def group_chat_comment(request):
     if request.method == 'POST':
-        sender = request.POST['sender'] 
+        sender = request.POST['sender']
         comment = request.POST['comment']
         group_name = request.POST['group_name']
         profileimage = request.POST['profile_image']
-        
-        comment = Group_comment.objects.create(sender=sender,comment=comment,profileimage=profileimage,group_name=group_name) 
+
+        comment = Group_comment.objects.create(sender=sender,comment=comment,profileimage=profileimage,group_name=group_name)
         comment.save()
     return HttpResponse('s')
