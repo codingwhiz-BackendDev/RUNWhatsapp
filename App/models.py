@@ -54,6 +54,8 @@ class Message(models.Model):
     receiverId = models.CharField(max_length=255, null=True)
     senderId = models.CharField(max_length=255, null=True)
     message = models.CharField(max_length=255, null=True)
+    image = models.FileField(upload_to='Chat', max_length=100, null=True) 
+    video = models.FileField(upload_to='Chat', max_length=100, null=True) 
     def __str__(self):
         return str(self.message)
     

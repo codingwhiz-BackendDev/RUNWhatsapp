@@ -6,27 +6,43 @@ function myFunction() {
 $(document).ready(function () {
     $(document).on('submit', '#send', function (e) {
         e.preventDefault()
+        var formData = new FormData();
+        formData.append('sender', $('#sender').val());
+        formData.append('receiver', $('#receiver').val());
+        formData.append('profile_image', $('#profile_image').val());
+        formData.append('message', $('#message').val());
+        formData.append('receiverId', $('#receiverId').val());
+        formData.append('senderId', $('#senderId').val());
+
+        // Append the file (make sure the input allows file uploads)
+        if ($('#image')[0].files[0]) {
+            formData.append('image', $('#image')[0].files[0]);
+        }
+        // Append the file (make sure the input allows file uploads)
+        if ($('#video')[0].files[0]) {
+            formData.append('video', $('#video')[0].files[0]);
+        }
+
+        // Add CSRF token (important!)
+        formData.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').val());
         $.ajax({
             type: 'POST',
             url: '/send_message',
-            data: {
-                sender: $('#sender').val(),
-                receiver: $('#receiver').val(),
-                message: $('#message').val(),
-                receiverId: $('#receiverId').val(),
-                senderId: $('#senderId').val(),
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-            },
-            success: function (response) {
-                // document.getElementById('display-comment').innerHTML = response
-                //alert(response)
+            processData: false, // Important for file uploads
+            contentType: false, // Important for file uploads
+            data: formData,
 
+            success: function (data) {
+                //alert(data);
             },
             error: function (response) {
-                //alert('an error occured')
+                //alert('An error occurred');
             }
-        })
+        });
         document.getElementById('message').value = ''
+        // Empty the file input field for image and video
+        $('#image').val(''); // Clears the image file input
+        $('#video').val(''); // Clears the video file input
     })
 })
 
@@ -41,18 +57,31 @@ $(document).ready(function () {
 
                 $('#display-comment').empty()
                 for (var key in response.messages) {
+                    // Check if the image exists and is not null or empty
+                    var IfImage = response.messages[key].image;
+                    var imageHTML = (IfImage && IfImage.includes('.')) ? "<img src='" + IfImage + "' />" : "";
+
+                    var IfVideo = response.messages[key].video;
+                    var videoExtensions = ['.mp4', '.webm', '.ogg']; // Valid video extensions
+                    var videoHTML = (IfVideo && videoExtensions.some(ext => IfVideo.includes(ext)))
+                        ? "<video controls><source src='" + IfVideo + "' type='video/mp4'></video>"
+                        : "";
+
                     if (response.messages[key].sender != $('#sender').val()) {
                         var temp = "<div class='border-t pt-4' style='margin-right:auto;width:fit-content;'><div class='flex'><div class='h-10 rounded-full relative flex-shrink-0'>"
                             + "</div><div class='text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20'>" +
-                            "<p class='leading-6'></p>" + response.messages[key].message + "</ul></div></div ></div > "
+                            "<p class='leading-6'></p>" + response.messages[key].message + "</ul></div></div ></div > " + imageHTML + videoHTML;
                         $('#display-comment').append(temp)
 
                     } else {
                         var temp = "<div class='border-t pt-4' style='margin-left:auto;width:fit-content;'><div class='flex'><div class='w-10 h-10 rounded-full relative'></div><div style='background-color: pink;' class='text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20'>" +
-                            " <p class='leading-6'></p>" + response.messages[key].message + "</ul></div></div ></div > "
+                            " <p class='leading-6'></p>" + response.messages[key].message + "</ul></div></div ></div > " + imageHTML + videoHTML;
                         $('#display-comment').append(temp)
 
+
+
                     }
+
 
                 }
                 function scrollToBottom() {

@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 import datetime
 from django.utils import timezone
+from django.core.files.storage import FileSystemStorage
  
 # Create your views here.
 
@@ -204,26 +205,66 @@ def chat(request, pk):
 
 @login_required(login_url='login')
 def send_message(request):
+    
     if request.method == 'POST':
         sender = request.POST['sender']
         receiver = request.POST['receiver'] 
         message = request.POST['message'] 
         receiverId =  request.POST['receiverId']
-        senderId =  request.POST['senderId']
+        senderId =  request.POST['senderId']    
+        
+        
+        # Initialize variables for image and video
+        image = request.FILES.get('image', None)  # Get image from the request if available
+        video = request.FILES.get('video', None)  # Get video from the request if available
+
+        # Base message creation (no image or video)
+        
+        messages = Message.objects.create(
+            sender=sender,
+            receiver=receiver,
+            senderId=senderId,
+            receiverId=receiverId, 
+            message=message
+        )
         
         mycontact = myContact.objects.filter(Q(user_phone_number = receiver)|Q(phone_number = receiver)).exclude(~Q(user_phone_number=sender),~Q(phone_number=sender))
         
-        print(mycontact)
+        #If there is a messsage update last message 
+        if message:
+            for contact in mycontact:
+                contact.last_message = str(messages)
+                contact.save() 
         
-        messages = Message.objects.create(sender=sender,receiverId=receiverId,senderId=senderId, receiver=receiver, message=message)
-        message = messages.save() 
-        
-        
-        
-        for contact in mycontact:
-            contact.last_message = str(messages)
+        # Get contact user is chatting with 
+        contact_chat = myContact.objects.get(user_phone_number=request.user, phone_number=receiver)    
+        print(contact)     
+        if image:
+            fs = FileSystemStorage()  # Creates a filesystem storage instance
+            filename = fs.save('Chat/' + str(image), image)  # Saves the image in the Chat folder
+            image_path = fs.url(filename)  # Gets the URL of the saved image
+            messages.image = image_path  # Save the image path to the message object
+            messages.save()
+            for contact in mycontact:
+                contact.last_message = str(contact) + ' Sent a Photo Photo'
+                contact.save()
             
-            contact.save()
+            
+        # If video is provided, update the message with the video
+        if video:
+            video_path = '/media/Chat/' + str(video)
+            print(video_path)
+            messages.video = video_path
+            messages.save()
+            for contact in mycontact:
+                contact.last_message = 'Video'
+                contact.save()
+        
+        
+        
+
+            
+            
     return HttpResponse('Message sent')
  
 @login_required(login_url='login')
