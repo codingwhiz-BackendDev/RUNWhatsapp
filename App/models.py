@@ -14,6 +14,7 @@ class myContact(models.Model):
     user_image = models.ImageField(upload_to='Profile Image', default='blank.png')
     bio = models.CharField(max_length=255, null=True)
     last_message = models.CharField(max_length=255, default='No messages')
+    last_message_time = models.TimeField(auto_now=True)
     
     def __str__(self):
         return str(self.contact)

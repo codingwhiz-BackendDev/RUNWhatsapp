@@ -20,27 +20,37 @@
         {% for contacts in mycontact %}
         <section class="chat-window">
             <div class="chat-header">
-                <a href="/contact_profile/{{contacts.phone_number}}">
+                <a href="{{contacts.image.url}}">
                     <img src="{{contacts.image.url}}" alt="Profile Picture" />
                 </a>
 
-                <span>
+                <span style="display: block; width: 100%; padding:15px">
+                    <!-- Contact Name -->
                     <a href="/contact_profile/{{contacts.phone_number}}"
-                        style="color: black; font-size:larger;font-weight:bolder">{{contacts}}
+                        style="color: black; font-size: larger; font-weight: bolder; display: block; margin-bottom: 5px;">
+                        {{contacts}}
                     </a>
 
-
-                    <a href="chat/{{contacts.phone_number}}">
-                        <div>
-                            <h5 style="color: black; font-family: monospace;">
+                    <!-- Last Message and Time aligned using Flexbox -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Last Message -->
+                        <a href="chat/{{contacts.phone_number}}">
+                            <h5 style="color:gray; font-family: monospace; margin: 0;">
                                 {{contacts.last_message|truncatewords:7}}
                             </h5>
-                            <input type="hidden" name="" value="{{contacts.phone_number}}" id="contact_number" />
-                        </div>
-                    </a>
+                        </a>
+
+                        <!-- Last Message Time -->
+                        <a href="chat/{{contacts.phone_number}}">
+                            <h6 style="color: gray; margin: 0;">
+                                {{ contacts.last_message_time|time:"h:i a" }}
+                            </h6>
+                        </a>
+                    </div>
                 </span>
             </div>
         </section>
+
         {% endfor %}
 
 

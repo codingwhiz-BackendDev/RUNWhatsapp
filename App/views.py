@@ -30,7 +30,7 @@ def index(request):
         return render(request, 'index.html', {'result':result,'profile':profile})
     else:
 
-        mycontact = myContact.objects.filter(user_phone_number= user)
+        mycontact = myContact.objects.filter(user_phone_number= user).order_by('-last_message_time')
         print(mycontact)
         people_with_mycontact = myContact.objects.filter(phone_number = user)
         all_contact = myContact.objects.all()
@@ -244,6 +244,7 @@ def send_message(request):
         if message:
             for contact in mycontact:
                 contact.last_message = str(messages)
+                contact.last_message_time = timezone.now
                 contact.save()
 
 
@@ -255,6 +256,7 @@ def send_message(request):
             messages.save()
             for contact in mycontact:
                 contact.last_message = ' Sent a Photo'
+                contact.last_message_time = timezone.now
                 contact.save()
 
 
@@ -267,6 +269,7 @@ def send_message(request):
             messages.save()
             for contact in mycontact:
                 contact.last_message = ' Sent a Video'
+                contact.last_message_time = timezone.now
                 contact.save()
 
 
