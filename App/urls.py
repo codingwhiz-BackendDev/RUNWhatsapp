@@ -20,6 +20,7 @@ urlpatterns = [
     path('delete_post/<str:pk>', views.delete_post, name='delete_post'),
     path('group_chat_comment', views.group_chat_comment, name='group_chat_comment'),
     path('communities', views.communities, name='communities'),
+    path('welcome_page', views.welcome_page, name='welcome_page'),
     path('view_community/<str:pk>', views.view_community, name='view_community'),
     
      # Forgot Password URLS

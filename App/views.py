@@ -9,14 +9,14 @@ import datetime
 from django.utils import timezone
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail
- 
 
-from datetime import datetime, timedelta
+
+from datetime import timedelta
 import pytz
 
 # Create your views here.
 
-@login_required(login_url='login')
+@login_required(login_url='welcome_page')
 def index(request):
     profile = Profile.objects.get(username=request.user)
     user = User.objects.get(username=request.user)
@@ -46,6 +46,8 @@ def index(request):
 
         return render(request, 'index.html', context)
 
+def welcome_page(request):
+    return render(request,'welcome_page.html')
 def register(request):
     if request.method == 'POST':
         first_name = request.POST['username']
@@ -74,6 +76,8 @@ def register(request):
                 profile = Profile.objects.create(username=user_model,)
                 profile.save()
                 return redirect('login')
+
+
         else:
             return redirect('register')
             messages.info(request, 'Password does not match')
@@ -98,7 +102,7 @@ def login(request):
 @login_required(login_url='login')
 def logout(request):
     auth.logout(request)
-    return redirect('login')
+    return redirect('welcome_page')
 
 @login_required(login_url='login')
 def add_contact(request):
@@ -210,39 +214,39 @@ def chat(request, pk):
 
 @login_required(login_url='login')
 def send_message(request):
-    
+
     if request.method == 'POST':
         sender = request.POST['sender']
         receiver = request.POST['receiver']
         message = request.POST['message']
         receiverId =  request.POST['receiverId']
 
-        senderId =  request.POST['senderId']    
-        
-        
+        senderId =  request.POST['senderId']
+
+
         # Initialize variables for image and video
         image = request.FILES.get('image', None)  # Get image from the request if available
         video = request.FILES.get('video', None)  # Get video from the request if available
 
         # Base message creation (no image or video)
-        
+
         messages = Message.objects.create(
             sender=sender,
             receiver=receiver,
             senderId=senderId,
-            receiverId=receiverId, 
+            receiverId=receiverId,
             message=message
         )
-        
+
         mycontact = myContact.objects.filter(Q(user_phone_number = receiver)|Q(phone_number = receiver)).exclude(~Q(user_phone_number=sender),~Q(phone_number=sender))
-        
-        #If there is a messsage update last message 
+
+        #If there is a messsage update last message
         if message:
             for contact in mycontact:
                 contact.last_message = str(messages)
-                contact.save() 
-        
-         
+                contact.save()
+
+
         if image:
             fs = FileSystemStorage()  # Creates a filesystem storage instance
             filename = fs.save('Chat/' + str(image), image)  # Saves the image in the Chat folder
@@ -252,8 +256,8 @@ def send_message(request):
             for contact in mycontact:
                 contact.last_message = ' Sent a Photo'
                 contact.save()
-            
-            
+
+
         # If video is provided, update the message with the video
         if video:
             fs = FileSystemStorage()  # Creates a filesystem storage instance
@@ -264,28 +268,8 @@ def send_message(request):
             for contact in mycontact:
                 contact.last_message = ' Sent a Video'
                 contact.save()
-        
-        
-        
-
-            
-            
-
-        senderId =  request.POST['senderId']
-
-        mycontact = myContact.objects.filter(Q(user_phone_number = receiver)|Q(phone_number = receiver)).exclude(~Q(user_phone_number=sender),~Q(phone_number=sender))
-
-        print(mycontact)
-
-        messages = Message.objects.create(sender=sender,receiverId=receiverId,senderId=senderId, receiver=receiver, message=message)
-        message = messages.save()
 
 
-
-        for contact in mycontact:
-            contact.last_message = str(messages)
-
-            contact.save() 
     return HttpResponse('Message sent')
 
 @login_required(login_url='login')
@@ -301,11 +285,10 @@ def status(request):
     real_status = UserStatus.objects.all()
     mycontact = myContact.objects.filter(user_phone_number= user)
 
-    
+
    # last_minute = now - datetime.timedelta(seconds=60)
-     
     status = Status.objects.all()
-    
+
     # Get exactly 24hour the status model was created
     for status in status:
         now = timezone.now()
@@ -317,29 +300,24 @@ def status(request):
             status.delete()
         else:
             print('Not yet 24 hours')
-            
+
     # Get exactly 24hour the Userstatus model was created
     for status in real_status:
-        now = timezone.now() 
+        now = timezone.now()
         after_24Hours = status.time + datetime.timedelta(hours=24)
         if now == after_24Hours or now >= after_24Hours:
             print('Exactly 24 hours now')
             status.delete()
         else:
             print('Not yet 24 hours')
-            
-        
-    for contacts in mycontact: 
-        contact = contacts.contact
-         
 
-    print(mycontact)
+
     for contacts in mycontact:
         contact = contacts.contact
         print(contact)
 
 
-        return render(request, 'status.html', {'profile':profile,'real_status':real_status})
+    return render(request, 'status.html', {'profile':profile,'real_status':real_status})
 
 @login_required(login_url='login')
 def view_status(request, pk):

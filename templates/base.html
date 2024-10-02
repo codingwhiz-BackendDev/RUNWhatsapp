@@ -116,7 +116,7 @@
 
         .logo {
             display: grid;
-            grid-template-columns: auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto;
             grid-gap: 1px;
             padding: 1px;
         }
@@ -353,7 +353,7 @@
 
 <body>
     <div class="upheader">
-        <h2 style="padding-top: 20px;">RunWhatsApp</h2>
+        <h2 style="padding-top: 20px;">Hey👋</h2>
         {% if request.user.is_authenticated %}
         <h2><a href="post_status">
                 <span class="fa fa-camera" style="padding-top: 25px;" class="img dropbtn" title="post status"></span>
@@ -409,7 +409,6 @@
 
 
             {% else %}
-            <div class="signin"><a href="/">RunWhatsApp</a></div>
             <div class="signin"><a href="/login">Login</a></div>
             <div class="register"><a href="/register">Register</a></div>
             <div class="forgot_password"><a href="/forgot_password/">Forgot Password?</a></div>

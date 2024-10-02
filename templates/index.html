@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block title %} RunWhatsApp {% endblock title %}
+    {% block title %} Hey {% endblock title %}
 </head>
 
 <body>
@@ -106,11 +106,3 @@
 </body>
 
 </html>
-if request.FILES.get('video'):
-user1_status = UserStatus.objects.filter(user=user)
-for user1 in user1_status:
-user1.video = video
-user1.save()
-
-video_status = Status.objects.create(user=user, text=text)
-video_status.save()

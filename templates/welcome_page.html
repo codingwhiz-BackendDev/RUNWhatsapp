@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background-color: #333;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+        }
+
+        .typing-container {
+            position: relative;
+            overflow: hidden;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .typing-container span {
+            display: inline-block;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+            background-color: white;
+            color: black;
+            border-radius: 7px;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <div class="typing-container">
+        <span id="typing-text"></span>
+        <h4><a style="color: white;" href="login">Login</a></h4>
+    </div>
+
+
+    <script>
+        const messages = [
+            "Welcome to Hey👋",
+            "Connecting people around the world.",
+            "Your messages are secure.",
+            "Start chatting now!",
+            "Enjoy seamless communication."
+        ];
+
+        let index = 0;
+        let charIndex = 0;
+        let currentMessage = '';
+        const typingSpeed = 100; // Speed in milliseconds
+
+        function type() {
+            if (charIndex < messages[index].length) {
+                currentMessage += messages[index].charAt(charIndex);
+                document.getElementById("typing-text").textContent = currentMessage;
+                charIndex++;
+                setTimeout(type, typingSpeed);
+            } else {
+                setTimeout(deleteMessage, 2000); // Wait before deleting the message
+            }
+        }
+
+        function deleteMessage() {
+            if (charIndex > 0) {
+                currentMessage = currentMessage.slice(0, -1);
+                document.getElementById("typing-text").textContent = currentMessage;
+                charIndex--;
+                setTimeout(deleteMessage, typingSpeed);
+            } else {
+                index = (index + 1) % messages.length; // Cycle through messages
+                charIndex = 0;
+                setTimeout(type, 500); // Wait before typing the next message
+            }
+        }
+
+        // Start the typing effect
+        window.onload = () => {
+            type();
+        };
+
+    </script>
+</body>
+
+</html>
